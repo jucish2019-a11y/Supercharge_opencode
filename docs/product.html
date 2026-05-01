@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prism — Design System Infrastructure</title>
+  <meta name="description" content="Prism is the design system infrastructure that lets teams ship consistent interfaces without sacrificing velocity.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════
+       PHASE 4: COLOR SYSTEM + PHASE 5: SPATIAL
+       Dark-first with indigo accent
+       ═══════════════════════════════════════════ */
+    :root {
+      /* Typography: 1.25 Major Second, sans-serif throughout */
+      --t-display: 4rem;      /* 64px */
+      --t-title-1: 3.2rem;    /* 51.2px */
+      --t-title-2: 2.56rem;   /* 41px */
+      --t-headline: 1.6rem;   /* 25.6px */
+      --t-body-lg: 1.25rem;   /* 20px */
+      --t-body: 1rem;         /* 16px */
+      --t-caption: 0.875rem;  /* 14px */
+      --t-overline: 0.75rem;  /* 12px */
+
+      --lh-display: 1.05;
+      --lh-title: 1.15;
+      --lh-body: 1.6;
+      --lh-caption: 1.4;
+
+      --ls-tight: -0.02em;
+      --ls-normal: 0;
+      --ls-wide: 0.02em;
+      --ls-wider: 0.08em;
+
+      /* Space scale: 8px base */
+      --s-xs: 0.25rem;   /* 4px */
+      --s-sm: 0.5rem;    /* 8px */
+      --s-md: 1rem;      /* 16px */
+      --s-lg: 1.5rem;    /* 24px */
+      --s-xl: 2rem;      /* 32px */
+      --s-2xl: 3rem;     /* 48px */
+      --s-3xl: 4rem;     /* 64px */
+      --s-4xl: 6rem;     /* 96px */
+      --s-5xl: 8rem;     /* 128px */
+
+      /* DARK MODE: primary design */
+      /* Cool neutral scale */
+      --n-5:  #0a0a0b;
+      --n-10: #141416;
+      --n-20: #1e1e22;
+      --n-30: #2a2a30;
+      --n-40: #3f3f46;
+      --n-50: #52525b;
+      --n-60: #71717a;
+      --n-70: #a1a1aa;
+      --n-80: #d4d4d8;
+      --n-90: #fafafa;
+
+      /* Indigo tonal palette: 10 steps */
+      --p-5:  #eef2ff;
+      --p-10: #e0e7ff;
+      --p-20: #c7d2fe;
+      --p-30: #a5b4fc;
+      --p-40: #818cf8;
+      --p-50: #6366f1;
+      --p-60: #4f46e5;
+      --p-70: #4338ca;
+      --p-80: #3730a3;
+      --p-90: #312e81;
+
+      /* Semantic tokens */
+      --bg: var(--n-5);
+      --bg-alt: var(--n-10);
+      --bg-elevated: var(--n-20);
+      --surface: var(--n-10);
+      --surface-hover: var(--n-20);
+      --surface-active: var(--n-30);
+
+      --text-primary: var(--n-90);
+      --text-secondary: var(--n-70);
+      --text-tertiary: var(--n-60);
+      --text-inverse: var(--n-5);
+
+      --accent: var(--p-60);
+      --accent-hover: var(--p-50);
+      --accent-active: var(--p-70);
+      --accent-subtle: var(--p-90);
+
+      --border: var(--n-30);
+      --border-light: var(--n-20);
+      --border-strong: var(--n-40);
+
+      /* Elevation: tonal shifts */
+      --elevation-0: var(--bg);
+      --elevation-1: var(--bg-alt);
+      --elevation-2: var(--bg-elevated);
+      --elevation-3: var(--n-30);
+
+      /* Blue-shifted shadows */
+      --shadow-sm: 0 1px 2px rgba(79, 70, 229, 0.05);
+      --shadow-md: 0 4px 12px rgba(79, 70, 229, 0.08);
+      --shadow-lg: 0 8px 24px rgba(79, 70, 229, 0.12);
+
+      --font-sans: 'Inter', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+
+      --container: 72rem;
+      --reading: 42rem;
+
+      /* Motion: gentle spring (vs snappy on portfolio) */
+      --ease-gentle: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-snappy: cubic-bezier(0.32, 0.72, 0, 1);
+      --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+      --dur-instant: 0ms;
+      --dur-quick: 100ms;
+      --dur-standard: 200ms;
+      --dur-emphasized: 300ms;
+      --dur-scenic: 500ms;
+
+      --selection-bg: var(--p-80);
+      --selection-text: var(--n-90);
+    }
+
+    /* LIGHT MODE: contextual alternative */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --n-5:  #fafafa;
+        --n-10: #f4f4f5;
+        --n-20: #e4e4e7;
+        --n-30: #d4d4d8;
+        --n-40: #a1a1aa;
+        --n-50: #71717a;
+        --n-60: #52525b;
+        --n-70: #3f3f46;
+        --n-80: #27272a;
+        --n-90: #18181b;
+
+        --bg: var(--n-5);
+        --bg-alt: var(--n-10);
+        --bg-elevated: var(--n-20);
+        --surface: #ffffff;
+        --surface-hover: var(--n-10);
+        --surface-active: var(--n-20);
+
+        --text-primary: var(--n-90);
+        --text-secondary: var(--n-60);
+        --text-tertiary: var(--n-50);
+        --text-inverse: #ffffff;
+
+        --accent: var(--p-60);
+        --accent-hover: var(--p-50);
+        --accent-active: var(--p-70);
+        --accent-subtle: var(--p-10);
+
+        --border: var(--n-30);
+        --border-light: var(--n-20);
+        --border-strong: var(--n-40);
+
+        --elevation-0: var(--bg);
+        --elevation-1: var(--bg-alt);
+        --elevation-2: var(--bg-elevated);
+        --elevation-3: var(--n-30);
+
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+        --selection-bg: var(--p-20);
+        --selection-text: var(--n-90);
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       BASE
+       ═══════════════════════════════════════════ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: clamp(15px, 1vw + 12px, 18px);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: var(--t-body);
+      line-height: var(--lh-body);
+      color: var(--text-primary);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--selection-bg);
+      color: var(--selection-text);
+    }
+
+    /* ═══════════════════════════════════════════
+       TYPOGRAPHY: Sans-serif throughout
+       Phase 3: Type System
+       ═══════════════════════════════════════════ */
+    h1, h2, h3, h4 {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      line-height: var(--lh-title);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+    }
+
+    h1 { font-size: var(--t-display); line-height: var(--lh-display); }
+    h2 { font-size: var(--t-title-1); }
+    h3 { font-size: var(--t-title-2); }
+    h4 { font-size: var(--t-headline); }
+
+    p {
+      max-width: var(--reading);
+      color: var(--text-secondary);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color var(--dur-quick) var(--ease-out);
+    }
+
+    a:hover { color: var(--accent-hover); }
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    .overline {
+      font-size: var(--t-overline);
+      font-weight: 600;
+      letter-spacing: var(--ls-wider);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    .caption {
+      font-size: var(--t-caption);
+      line-height: var(--lh-caption);
+      color: var(--text-tertiary);
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+      letter-spacing: -0.01em;
+    }
+
+    /* ═══════════════════════════════════════════
+       LAYOUT
+       Phase 5: Spatial System
+       ═══════════════════════════════════════════ */
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 var(--s-lg);
+    }
+
+    .narrow {
+      max-width: var(--reading);
+      margin: 0 auto;
+      padding: 0 var(--s-lg);
+    }
+
+    .section-major {
+      padding-top: var(--s-5xl);
+      padding-bottom: var(--s-5xl);
+    }
+
+    .section-standard {
+      padding-top: var(--s-4xl);
+      padding-bottom: var(--s-4xl);
+    }
+
+    .gap {
+      height: var(--s-4xl);
+      background: linear-gradient(to bottom, var(--bg), var(--bg-alt));
+    }
+
+    /* ═══════════════════════════════════════════
+       NAVIGATION + SCROLL PROGRESS BAR
+       Phase 7: States + Phase 8: Scroll-linked
+       ═══════════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10, 10, 11, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    @media (prefers-color-scheme: light) {
+      .nav { background: rgba(250, 250, 250, 0.92); }
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 var(--s-lg);
+    }
+
+    .nav-logo {
+      font-family: var(--font-sans);
+      font-size: var(--t-body-lg);
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.03em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: var(--s-xl);
+      list-style: none;
+    }
+
+    .nav-link {
+      position: relative;
+      font-size: var(--t-caption);
+      font-weight: 500;
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: var(--s-xs) 0;
+      transition: color var(--dur-quick) var(--ease-out);
+    }
+
+    .nav-link:hover { color: var(--text-primary); }
+    .nav-link.active { color: var(--text-primary); }
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+    }
+    .nav-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    /* Scroll-linked progress bar */
+    .scroll-progress {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      height: 2px;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.1s linear;
+      z-index: 101;
+    }
+
+    /* ═══════════════════════════════════════════
+       HERO
+       Phase 2: L0, Phase 6: Centered dominant
+       ═══════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 64px;
+      padding-bottom: var(--s-5xl);
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle ambient background glow */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(79, 70, 229, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 56rem;
+    }
+
+    .hero-overline {
+      font-size: var(--t-overline);
+      font-weight: 600;
+      letter-spacing: var(--ls-wider);
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--s-lg);
+    }
+
+    .hero-headline {
+      font-size: var(--t-display);
+      line-height: var(--lh-display);
+      letter-spacing: -0.03em;
+      margin-bottom: var(--s-lg);
+    }
+
+    .hero-sub {
+      font-size: var(--t-body-lg);
+      color: var(--text-secondary);
+      margin: 0 auto var(--s-xl);
+      max-width: 36rem;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: var(--s-md);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-sm);
+      padding: var(--s-md) var(--s-xl);
+      font-family: var(--font-sans);
+      font-size: var(--t-caption);
+      font-weight: 600;
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition:
+        background var(--dur-standard) var(--ease-gentle),
+        transform var(--dur-quick) var(--ease-out),
+        box-shadow var(--dur-standard) var(--ease-out);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--text-inverse);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:active {
+      background: var(--accent-active);
+      transform: scale(0.98);
+      transition-duration: 60ms;
+    }
+
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-strong);
+    }
+
+    .btn-secondary:active {
+      background: var(--surface-active);
+      transform: scale(0.98);
+    }
+
+    .btn-secondary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* ═══════════════════════════════════════════
+       SOLUTION: 2-column layout
+       Phase 6: Composition
+       ═══════════════════════════════════════════ */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-3xl);
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .solution-grid {
+        grid-template-columns: 1fr;
+        gap: var(--s-xl);
+      }
+    }
+
+    .solution-visual {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: var(--s-xl);
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-md);
+    }
+
+    .code-block {
+      background: var(--n-5);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: var(--s-md);
+      font-family: var(--font-mono);
+      font-size: var(--t-caption);
+      color: var(--text-secondary);
+      overflow-x: auto;
+    }
+
+    .code-block .token-prop { color: var(--p-40); }
+    .code-block .token-val { color: var(--p-30); }
+    .code-block .token-punc { color: var(--n-60); }
+
+    /* ═══════════════════════════════════════════
+       FEATURE BENTO GRID
+       Phase 6: Composition (mixed sizes)
+       ═══════════════════════════════════════════ */
+    .features-header {
+      text-align: center;
+      margin-bottom: var(--s-3xl);
+    }
+
+    .features-header h2 {
+      margin-bottom: var(--s-md);
+    }
+
+    .features-header p {
+      margin: 0 auto;
+      max-width: 32rem;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--s-lg);
+    }
+
+    .bento-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: var(--s-xl);
+      transition:
+        transform var(--dur-standard) var(--ease-gentle),
+        box-shadow var(--dur-standard) var(--ease-out),
+        border-color var(--dur-quick) var(--ease-out);
+    }
+
+    .bento-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-strong);
+    }
+
+    .bento-card:active {
+      transform: translateY(0) scale(0.995);
+    }
+
+    .bento-card:focus-within {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .bento-card:nth-child(1) { grid-column: span 7; }
+    .bento-card:nth-child(2) { grid-column: span 5; }
+    .bento-card:nth-child(3) { grid-column: span 5; }
+    .bento-card:nth-child(4) { grid-column: span 7; }
+    .bento-card:nth-child(5) { grid-column: span 12; }
+
+    @media (max-width: 768px) {
+      .bento-card:nth-child(n) { grid-column: span 12; }
+    }
+
+    .bento-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-subtle);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--s-md);
+    }
+
+    .bento-icon svg {
+      width: 20px;
+      height: 20px;
+      color: var(--accent);
+    }
+
+    .bento-title {
+      font-size: var(--t-headline);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--s-sm);
+    }
+
+    .bento-desc {
+      font-size: var(--t-body);
+      color: var(--text-secondary);
+      max-width: 100%;
+    }
+
+    /* ═══════════════════════════════════════════
+       STATS BAR
+       Phase 2: Data display grammar (numbers for authority)
+       Density: compact
+       ═══════════════════════════════════════════ */
+    .stats-bar {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: var(--s-2xl) 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-xl);
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: var(--t-title-2);
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-value .stat-unit {
+      font-size: 0.5em;
+      color: var(--text-tertiary);
+      font-weight: 500;
+    }
+
+    .stat-label {
+      font-size: var(--t-caption);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-top: var(--s-xs);
+    }
+
+    /* ═══════════════════════════════════════════
+       LOGO BAR
+       Social proof: logos for trust
+       ═══════════════════════════════════════════ */
+    .logo-bar {
+      padding: var(--s-2xl) 0;
+      text-align: center;
+    }
+
+    .logo-bar-label {
+      font-size: var(--t-caption);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--s-xl);
+    }
+
+    .logo-grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--s-3xl);
+      flex-wrap: wrap;
+    }
+
+    .logo-item {
+      font-family: var(--font-sans);
+      font-size: var(--t-body-lg);
+      font-weight: 600;
+      color: var(--n-60);
+      letter-spacing: -0.01em;
+    }
+
+    /* ═══════════════════════════════════════════
+       INTERACTIVE TABS
+       Phase 7: Tab switcher state machine
+       ═══════════════════════════════════════════ */
+    .tabs-section {
+      background: var(--bg-alt);
+    }
+
+    .tabs-header {
+      text-align: center;
+      margin-bottom: var(--s-3xl);
+    }
+
+    .tabs-header h2 {
+      margin-bottom: var(--s-md);
+    }
+
+    .tabs-header p {
+      margin: 0 auto;
+      max-width: 32rem;
+    }
+
+    .tabs-nav {
+      display: flex;
+      justify-content: center;
+      gap: var(--s-xs);
+      margin-bottom: var(--s-2xl);
+      padding: var(--s-xs);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      max-width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tab-btn {
+      padding: var(--s-sm) var(--s-lg);
+      font-family: var(--font-sans);
+      font-size: var(--t-caption);
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition:
+        color var(--dur-quick) var(--ease-out),
+        background var(--dur-standard) var(--ease-gentle);
+      position: relative;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+      background: var(--surface-hover);
+    }
+
+    .tab-btn.active {
+      color: var(--text-primary);
+      background: var(--surface-active);
+      font-weight: 600;
+    }
+
+    .tab-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .tab-content {
+      display: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition:
+        opacity var(--dur-emphasized) var(--ease-gentle),
+        transform var(--dur-emphasized) var(--ease-gentle);
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .tab-content.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tab-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: var(--s-xl);
+      max-width: 48rem;
+      margin: 0 auto;
+    }
+
+    .tab-panel h4 {
+      margin-bottom: var(--s-md);
+    }
+
+    .tab-panel p {
+      margin-bottom: var(--s-lg);
+    }
+
+    .tab-panel pre {
+      background: var(--n-5);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: var(--s-md);
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: var(--t-caption);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ═══════════════════════════════════════════
+       CTA
+       ═══════════════════════════════════════════ */
+    .cta-section {
+      text-align: center;
+      padding-bottom: var(--s-5xl);
+    }
+
+    .cta-section h2 {
+      margin-bottom: var(--s-md);
+    }
+
+    .cta-section > p {
+      margin: 0 auto var(--s-xl);
+      max-width: 28rem;
+    }
+
+    .cta-meta {
+      margin-top: var(--s-xl);
+      font-size: var(--t-caption);
+      color: var(--text-tertiary);
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════ */
+    .footer {
+      padding: var(--s-xl) 0;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--t-caption);
+      color: var(--text-tertiary);
+    }
+
+    @media (max-width: 640px) {
+      .footer-inner {
+        flex-direction: column;
+        gap: var(--s-sm);
+        text-align: center;
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       MOTION: Scroll-triggered reveals
+       Phase 8: Motion System
+       ═══════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition:
+        opacity var(--dur-emphasized) var(--ease-gentle),
+        transform var(--dur-emphasized) var(--ease-gentle);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger for bento cards */
+    .bento-card.reveal.visible:nth-child(1) { transition-delay: 0ms; }
+    .bento-card.reveal.visible:nth-child(2) { transition-delay: 60ms; }
+    .bento-card.reveal.visible:nth-child(3) { transition-delay: 120ms; }
+    .bento-card.reveal.visible:nth-child(4) { transition-delay: 180ms; }
+    .bento-card.reveal.visible:nth-child(5) { transition-delay: 240ms; }
+
+    /* Stagger for stats */
+    .stat.reveal.visible:nth-child(1) { transition-delay: 0ms; }
+    .stat.reveal.visible:nth-child(2) { transition-delay: 40ms; }
+    .stat.reveal.visible:nth-child(3) { transition-delay: 80ms; }
+    .stat.reveal.visible:nth-child(4) { transition-delay: 120ms; }
+
+    /* Hero entrance: invested animation */
+    .hero-headline,
+    .hero-sub,
+    .hero-cta-group {
+      opacity: 0;
+      animation: hero-enter var(--dur-scenic) var(--ease-gentle) forwards;
+    }
+
+    .hero-headline { animation-delay: 100ms; }
+    .hero-sub { animation-delay: 200ms; }
+    .hero-cta-group { animation-delay: 300ms; }
+
+    @keyframes hero-enter {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══════════════════════════════════════════
+       REDUCED MOTION
+       ═══════════════════════════════════════════ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+      .hero-headline,
+      .hero-sub,
+      .hero-cta-group { opacity: 1; animation: none; }
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      html { font-size: 15px; }
+      .hero-headline { font-size: var(--t-title-1); }
+      .stat-value { font-size: var(--t-headline); }
+      .section-major {
+        padding-top: var(--s-4xl);
+        padding-bottom: var(--s-4xl);
+      }
+    }
+
+    @media (max-width: 375px) {
+      .container, .narrow { padding: 0 var(--s-md); }
+      .hero-headline { font-size: var(--t-title-2); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       NAVIGATION + SCROLL PROGRESS BAR
+       Phase 7: States + Phase 8: Scroll-linked
+       ═══════════════════════════════════════════ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Prism</a>
+      <ul class="nav-links">
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#demo" class="nav-link">Demo</a></li>
+        <li><a href="#pricing" class="nav-link">Pricing</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════
+       HERO
+       Phase 2: L0 (immediate)
+       Phase 6: Centered dominant
+       ═══════════════════════════════════════════ -->
+  <header class="hero">
+    <div class="hero-content">
+      <p class="hero-overline">Design System Infrastructure</p>
+      <h1 class="hero-headline">Ship consistent interfaces without sacrificing velocity</h1>
+      <p class="hero-sub">
+        Prism is the infrastructure layer between your design tokens and production code. It turns decisions into systems, and systems into momentum.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#features" class="btn btn-primary">
+          Explore features
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#demo" class="btn btn-secondary">View documentation</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="gap" role="separator" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════
+       SOLUTION: 2-column
+       Phase 2: L1 (first scroll)
+       ═══════════════════════════════════════════ -->
+  <section id="solution" class="section-standard">
+    <div class="container">
+      <div class="solution-grid">
+        <div class="solution-visual reveal">
+          <div class="code-block">
+            <span class="token-punc">{</span><br>
+            &nbsp;&nbsp;<span class="token-prop">"colors"</span><span class="token-punc">: {</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="token-prop">"primary"</span><span class="token-punc">: {</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="token-prop">"50"</span><span class="token-punc">: </span><span class="token-val">"#eef2ff"</span><span class="token-punc">,</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="token-prop">"500"</span><span class="token-punc">: </span><span class="token-val">"#6366f1"</span><span class="token-punc">,</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="token-prop">"900"</span><span class="token-punc">: </span><span class="token-val">"#312e81"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="token-punc">}</span><br>
+            &nbsp;&nbsp;<span class="token-punc">}</span><br>
+            <span class="token-punc">}</span>
+          </div>
+          <p class="caption" style="margin-top: var(--s-sm);">
+            Token definition in JSON. Prism compiles this to CSS, SCSS, Tailwind, and Figma variables.
+          </p>
+        </div>
+        <div class="reveal">
+          <p class="overline" style="margin-bottom: var(--s-sm);">The Problem</p>
+          <h2>Design tokens scattered across tools</h2>
+          <p style="margin-bottom: var(--s-md);">
+            Most teams define colors in Figma, reimplement them in CSS, hardcode them in component props, and maintain a separate set for mobile. When a brand color shifts, someone updates four files by hand. Two get missed.
+          </p>
+          <p>
+            Prism treats tokens as the source of truth. Define once in a structured format. Generate outputs for every platform. Version them with your codebase.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gap" role="separator" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════
+       FEATURE BENTO GRID
+       Phase 2: L1
+       Phase 6: Mixed-size bento
+       ═══════════════════════════════════════════ -->
+  <section id="features" class="section-major">
+    <div class="container">
+      <div class="features-header reveal">
+        <p class="overline">Features</p>
+        <h2>Everything a design system needs</h2>
+        <p>Not just tokens. The infrastructure around them: generation, validation, distribution, and governance.</p>
+      </div>
+
+      <div class="bento-grid">
+        <article class="bento-card reveal" tabindex="0">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+              <path d="M2 12h20"/>
+            </svg>
+          </div>
+          <h3 class="bento-title">Multi-platform tokens</h3>
+          <p class="bento-desc">
+            Define tokens in one structured format. Generate outputs for CSS custom properties, SCSS variables, Tailwind config, Figma variables, iOS UIColor, and Android XML. One source, infinite targets.
+          </p>
+        </article>
+
+        <article class="bento-card reveal" tabindex="0">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </div>
+          <h3 class="bento-title">Semantic validation</h3>
+          <p class="bento-desc">
+            Every token is validated at build time. Contrast ratios checked. References resolved. Deprecations flagged. No broken tokens make it to production.
+          </p>
+        </article>
+
+        <article class="bento-card reveal" tabindex="0">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <h3 class="bento-title">Changelog generation</h3>
+          <p class="bento-desc">
+            Every token change produces a semantic changelog. Designers know what shifted. Developers know what to update. Product knows what changed in the UI.
+          </p>
+        </article>
+
+        <article class="bento-card reveal" tabindex="0">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <line x1="3" y1="9" x2="21" y2="9"/>
+              <line x1="9" y1="21" x2="9" y2="9"/>
+            </svg>
+          </div>
+          <h3 class="bento-title">Component token binding</h3>
+          <p class="bento-desc">
+            Tokens bind to components, not values. A button references <code class="mono">--button-bg</code>, not <code class="mono">#6366f1</code>. When the semantic mapping changes, every component updates automatically.
+          </p>
+        </article>
+
+        <article class="bento-card reveal" tabindex="0">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3 class="bento-title">Governance and access control</h3>
+          <p class="bento-desc">
+            Role-based token editing. Designers propose changes. Lead designers approve. Developers consume. Full audit trail of who changed what, when, and why.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="gap" role="separator" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════
+       STATS BAR
+       Phase 2: Data display grammar (numbers)
+       Density: compact
+       ═══════════════════════════════════════════ -->
+  <section class="stats-bar">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat reveal">
+          <div class="stat-value">2,847</div>
+          <div class="stat-label">Teams using Prism</div>
+        </div>
+        <div class="stat reveal">
+          <div class="stat-value">99.99<span class="stat-unit">%</span></div>
+          <div class="stat-label">Uptime last quarter</div>
+        </div>
+        <div class="stat reveal">
+          <div class="stat-value">&lt;12<span class="stat-unit">ms</span></div>
+          <div class="stat-label">Token sync latency</div>
+        </div>
+        <div class="stat reveal">
+          <div class="stat-value">4.9<span class="stat-unit">/5</span></div>
+          <div class="stat-label">Developer rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       LOGO BAR
+       Social proof: logos
+       ═══════════════════════════════════════════ -->
+  <section class="logo-bar">
+    <div class="container">
+      <p class="logo-bar-label reveal">Trusted by engineering teams at</p>
+      <div class="logo-grid reveal">
+        <span class="logo-item">Linear</span>
+        <span class="logo-item">Vercel</span>
+        <span class="logo-item">Stripe</span>
+        <span class="logo-item">Figma</span>
+        <span class="logo-item">Notion</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="gap" role="separator" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════
+       INTERACTIVE TABS
+       Phase 7: Tab state machine
+       ═══════════════════════════════════════════ -->
+  <section id="demo" class="tabs-section section-major">
+    <div class="container">
+      <div class="tabs-header reveal">
+        <p class="overline">Interactive Demo</p>
+        <h2>See it in action</h2>
+        <p>Switch between platforms to see how Prism generates consistent outputs.</p>
+      </div>
+
+      <div class="tabs-nav reveal" role="tablist" aria-label="Platform outputs">
+        <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-css" id="tab-btn-css">CSS</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tailwind" id="tab-btn-tailwind">Tailwind</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-figma" id="tab-btn-figma">Figma</button>
+      </div>
+
+      <div id="tab-css" class="tab-content active visible" role="tabpanel" aria-labelledby="tab-btn-css">
+        <div class="tab-panel">
+          <h4>CSS Custom Properties</h4>
+          <p>Generated output for modern browsers. Fully cascading, no build step required.</p>
+          <pre>:root {
+  --color-primary-50: #eef2ff;
+  --color-primary-500: #6366f1;
+  --color-primary-900: #312e81;
+  --color-neutral-50: #fafafa;
+  --color-neutral-900: #18181b;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}</pre>
+        </div>
+      </div>
+
+      <div id="tab-tailwind" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-tailwind">
+        <div class="tab-panel">
+          <h4>Tailwind Config</h4>
+          <p>Extended theme configuration with full token mapping and custom utilities.</p>
+          <pre>module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#eef2ff',
+          500: '#6366f1',
+          900: '#312e81',
+        },
+        neutral: {
+          50: '#fafafa',
+          900: '#18181b',
+        }
+      }
+    }
+  }
+}</pre>
+        </div>
+      </div>
+
+      <div id="tab-figma" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-figma">
+        <div class="tab-panel">
+          <h4>Figma Variables</h4>
+          <p>Exported as Figma variable collections with mode support for light/dark themes.</p>
+          <pre>{
+  "collection": "Prism Tokens",
+  "modes": ["light", "dark"],
+  "variables": {
+    "color/primary/500": {
+      "light": "#6366f1",
+      "dark": "#818cf8"
+    },
+    "color/neutral/900": {
+      "light": "#18181b",
+      "dark": "#fafafa"
+    }
+  }
+}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gap" role="separator" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════
+       CTA
+       Phase 2: L3 (committed)
+       ═══════════════════════════════════════════ -->
+  <section id="pricing" class="cta-section section-standard">
+    <div class="container">
+      <p class="overline" style="margin-bottom: var(--s-sm);">Get Started</p>
+      <h2>Start shipping with intention</h2>
+      <p>
+        Free for individuals and small teams. Scale when you need governance, access control, and multi-platform sync.
+      </p>
+      <div class="hero-cta-group" style="margin-top: var(--s-xl);">
+        <button class="btn btn-primary" type="button">
+          Start free trial
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="btn btn-secondary" type="button">Schedule a demo</button>
+      </div>
+      <p class="cta-meta">
+        No credit card required. 14-day free trial on all plans.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>Prism — Design System Infrastructure</p>
+      <p>Built with intention, not defaults</p>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════
+       JAVASCRIPT
+       Phase 8: Scroll-linked progress + reveals
+       Phase 7: Tab switching
+       ═══════════════════════════════════════════ -->
+  <script>
+    (function() {
+      /* Scroll-linked progress bar */
+      const progressBar = document.querySelector('.scroll-progress');
+
+      function updateProgress() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (scrollTop / docHeight) * 100;
+        progressBar.style.width = progress + '%';
+      }
+
+      window.addEventListener('scroll', updateProgress);
+      updateProgress();
+
+      /* Scroll-triggered reveals */
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      reveals.forEach(function(el) { observer.observe(el); });
+
+      /* Smooth scroll */
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      /* Active nav on scroll */
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      function updateActiveNav() {
+        const scrollPos = window.scrollY + 100;
+        sections.forEach(function(section) {
+          const top = section.offsetTop;
+          const bottom = top + section.offsetHeight;
+          const id = section.getAttribute('id');
+          if (scrollPos >= top && scrollPos < bottom) {
+            navLinks.forEach(function(link) {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === '#' + id) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      }
+
+      window.addEventListener('scroll', updateActiveNav);
+      updateActiveNav();
+
+      /* Tab switching with fade-through */
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const targetId = this.getAttribute('aria-controls');
+
+          /* Update button states */
+          tabBtns.forEach(function(b) {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          this.classList.add('active');
+          this.setAttribute('aria-selected', 'true');
+
+          /* Fade out current */
+          tabContents.forEach(function(content) {
+            if (content.classList.contains('active')) {
+              content.classList.remove('visible');
+              setTimeout(function() {
+                content.classList.remove('active');
+                /* Show new content */
+                if (content.id === targetId) {
+                  content.classList.add('active');
+                  /* Small delay for DOM update */
+                  requestAnimationFrame(function() {
+                    content.classList.add('visible');
+                  });
+                }
+              }, 150);
+            }
+          });
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
