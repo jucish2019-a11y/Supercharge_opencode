@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alex Chen — Design Engineer</title>
+  <meta name="description" content="Portfolio of Alex Chen, a design engineer who builds interfaces with intention, not defaults.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════
+       PHASE 4: COLOR SYSTEM + PHASE 5: SPATIAL SYSTEM
+       Design tokens: the complete token set
+       ═══════════════════════════════════════════ */
+    :root {
+      /* Typography scale: 1.333 Perfect Fourth */
+      --t-display: 4.209rem;   /* 67.3px — hero name */
+      --t-title-1: 3.157rem;   /* 50.5px — section headers */
+      --t-title-2: 2.369rem;   /* 37.9px — project titles */
+      --t-headline: 1.777rem;  /* 28.4px — subsection */
+      --t-body-lg: 1.333rem;   /* 21.3px — lead paragraphs */
+      --t-body: 1rem;          /* 16px — body text */
+      --t-caption: 0.875rem;   /* 14px — metadata */
+      --t-overline: 0.75rem;   /* 12px — labels */
+
+      /* Line heights */
+      --lh-display: 1.05;
+      --lh-title: 1.15;
+      --lh-body: 1.5;
+      --lh-caption: 1.4;
+
+      /* Letter spacing */
+      --ls-tight: -0.02em;
+      --ls-normal: 0;
+      --ls-wide: 0.02em;
+      --ls-wider: 0.08em;
+
+      /* Space scale: 8px base unit */
+      --s-xs: 0.25rem;   /* 4px */
+      --s-sm: 0.5rem;    /* 8px */
+      --s-md: 1rem;      /* 16px */
+      --s-lg: 1.5rem;    /* 24px */
+      --s-xl: 2rem;      /* 32px */
+      --s-2xl: 3rem;     /* 48px */
+      --s-3xl: 4rem;     /* 64px */
+      --s-4xl: 6rem;     /* 96px */
+      --s-5xl: 8rem;     /* 128px */
+
+      /* Colors: warm palette with terracotta accent */
+      /* Neutral scale: warm, 10 steps */
+      --n-5:  #faf7f2;
+      --n-10: #f0ebe3;
+      --n-20: #e6dfd4;
+      --n-30: #d8d0c6;
+      --n-40: #b5aca1;
+      --n-50: #948c82;
+      --n-60: #7a736a;
+      --n-70: #5c544c;
+      --n-80: #3d3833;
+      --n-90: #2a2520;
+
+      /* Primary (terracotta) tonal palette */
+      --p-5:  #fdf6f4;
+      --p-10: #f9e8e3;
+      --p-20: #f0cfc6;
+      --p-30: #e4b0a3;
+      --p-40: #d48e7d;
+      --p-50: #c45d3e;
+      --p-60: #a84d33;
+      --p-70: #8c3e2a;
+      --p-80: #6e3021;
+      --p-90: #4f2218;
+
+      /* Semantic tokens */
+      --bg: var(--n-5);
+      --bg-alt: var(--n-10);
+      --bg-elevated: var(--n-20);
+      --surface: #ffffff;
+      --surface-hover: var(--n-5);
+      --surface-active: var(--n-10);
+
+      --text-primary: var(--n-90);
+      --text-secondary: var(--n-70);
+      --text-tertiary: var(--n-50);
+      --text-inverse: var(--n-5);
+
+      --accent: var(--p-50);
+      --accent-hover: var(--p-60);
+      --accent-active: var(--p-70);
+      --accent-subtle: var(--p-10);
+
+      --border: var(--n-30);
+      --border-light: var(--n-20);
+      --border-strong: var(--n-40);
+
+      /* Elevation: tonal shifts, not shadows */
+      --elevation-0: var(--bg);
+      --elevation-1: var(--bg-alt);
+      --elevation-2: var(--bg-elevated);
+      --elevation-3: var(--n-30);
+
+      /* Font stacks */
+      --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+      --font-sans: -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+
+      /* Container widths */
+      --container: 72rem;
+      --reading: 42rem;
+
+      /* Motion: snappy spring approximations */
+      --ease-snappy: cubic-bezier(0.32, 0.72, 0, 1);
+      --ease-gentle: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-stiff: cubic-bezier(0.25, 0.1, 0.25, 1);
+      --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+      /* Transition durations */
+      --dur-instant: 0ms;
+      --dur-quick: 100ms;
+      --dur-standard: 200ms;
+      --dur-emphasized: 300ms;
+      --dur-scenic: 500ms;
+
+      /* Selection color: branded */
+      --selection-bg: var(--p-10);
+      --selection-text: var(--n-90);
+    }
+
+    /* Dark mode: contextual color mode */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1a1816;
+        --bg-alt: #252220;
+        --bg-elevated: #2f2c29;
+        --surface: #1a1816;
+        --surface-hover: #252220;
+        --surface-active: #2f2c29;
+
+        --text-primary: var(--n-10);
+        --text-secondary: var(--n-40);
+        --text-tertiary: var(--n-60);
+        --text-inverse: var(--n-90);
+
+        /* Accent desaturated for dark mode (no neon glow) */
+        --accent: var(--p-40);
+        --accent-hover: var(--p-50);
+        --accent-active: var(--p-60);
+        --accent-subtle: var(--p-90);
+
+        --border: var(--n-80);
+        --border-light: var(--n-80);
+        --border-strong: var(--n-70);
+
+        --elevation-0: var(--bg);
+        --elevation-1: var(--bg-alt);
+        --elevation-2: var(--bg-elevated);
+        --elevation-3: #3a3632;
+
+        --selection-bg: var(--p-80);
+        --selection-text: var(--n-5);
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       BASE STYLES
+       ═══════════════════════════════════════════ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: clamp(15px, 1vw + 12px, 18px);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: var(--t-body);
+      line-height: var(--lh-body);
+      color: var(--text-primary);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Selection: branded, not browser default */
+    ::selection {
+      background: var(--selection-bg);
+      color: var(--selection-text);
+    }
+
+    /* ═══════════════════════════════════════════
+       TYPOGRAPHY
+       Phase 3: Type System
+       ═══════════════════════════════════════════ */
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      line-height: var(--lh-title);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+    }
+
+    h1 {
+      font-size: var(--t-display);
+      line-height: var(--lh-display);
+    }
+
+    h2 {
+      font-size: var(--t-title-1);
+    }
+
+    h3 {
+      font-size: var(--t-title-2);
+    }
+
+    h4 {
+      font-size: var(--t-headline);
+    }
+
+    p {
+      max-width: var(--reading);
+      color: var(--text-secondary);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color var(--dur-quick) var(--ease-out);
+    }
+
+    a:hover {
+      color: var(--accent-hover);
+    }
+
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* Overline style */
+    .overline {
+      font-size: var(--t-overline);
+      font-weight: 500;
+      letter-spacing: var(--ls-wider);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    /* Caption style */
+    .caption {
+      font-size: var(--t-caption);
+      line-height: var(--lh-caption);
+      color: var(--text-tertiary);
+    }
+
+    /* Mono for technical data */
+    .mono {
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+    }
+
+    /* ═══════════════════════════════════════════
+       LAYOUT UTILITIES
+       Phase 5: Spatial System
+       ═══════════════════════════════════════════ */
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 var(--s-lg);
+    }
+
+    .narrow {
+      max-width: var(--reading);
+      margin: 0 auto;
+      padding: 0 var(--s-lg);
+    }
+
+    /* Section spacing: major separators */
+    .section-major {
+      padding-top: var(--s-5xl);
+      padding-bottom: var(--s-5xl);
+    }
+
+    .section-standard {
+      padding-top: var(--s-4xl);
+      padding-bottom: var(--s-4xl);
+    }
+
+    /* Gap: tonal shift breathing room */
+    .gap {
+      height: var(--s-4xl);
+      background: linear-gradient(to bottom, var(--bg), var(--bg-alt));
+    }
+
+    /* ═══════════════════════════════════════════
+       NAVIGATION
+       Phase 7: Interaction States
+       ═══════════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(250, 247, 242, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .nav {
+        background: rgba(26, 24, 22, 0.92);
+      }
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 var(--s-lg);
+    }
+
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: var(--t-body-lg);
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: var(--s-xl);
+      list-style: none;
+    }
+
+    /* Nav link state machine */
+    .nav-link {
+      position: relative;
+      font-size: var(--t-caption);
+      font-weight: 500;
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: var(--s-xs) 0;
+      transition:
+        color var(--dur-quick) var(--ease-out);
+    }
+
+    /* State: Hover */
+    .nav-link:hover {
+      color: var(--text-primary);
+    }
+
+    /* State: Active/Current */
+    .nav-link.active {
+      color: var(--text-primary);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    /* State: Focused */
+    .nav-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    /* ═══════════════════════════════════════════
+       HERO
+       Phase 2: Content Architecture (L0 immediate)
+       Phase 6: Composition (dominant element)
+       ═══════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 64px; /* nav height */
+      background: var(--bg);
+    }
+
+    .hero-content {
+      max-width: var(--reading);
+    }
+
+    .hero-name {
+      font-size: var(--t-display);
+      line-height: var(--lh-display);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--s-md);
+      color: var(--text-primary);
+    }
+
+    .hero-title {
+      font-family: var(--font-sans);
+      font-size: var(--t-body-lg);
+      font-weight: 400;
+      line-height: var(--lh-body);
+      color: var(--text-secondary);
+      margin-bottom: var(--s-xl);
+      max-width: 28rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-sm);
+      padding: var(--s-md) var(--s-xl);
+      background: var(--accent);
+      color: var(--text-inverse);
+      font-family: var(--font-sans);
+      font-size: var(--t-caption);
+      font-weight: 600;
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      /* State machine transitions */
+      transition:
+        background var(--dur-standard) var(--ease-snappy),
+        transform var(--dur-quick) var(--ease-out),
+        box-shadow var(--dur-standard) var(--ease-out);
+    }
+
+    /* State: Hover */
+    .hero-cta:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(196, 93, 62, 0.2);
+    }
+
+    /* State: Active/Pressed */
+    .hero-cta:active {
+      background: var(--accent-active);
+      transform: scale(0.98) translateY(0);
+      box-shadow: none;
+      transition-duration: 60ms;
+    }
+
+    /* State: Focused */
+    .hero-cta:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* State: Disabled */
+    .hero-cta:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════════
+       PROJECTS
+       Phase 2: Content Architecture (L1 first scroll)
+       Phase 6: Composition (bento grid)
+       ═══════════════════════════════════════════ */
+    .projects-header {
+      margin-bottom: var(--s-3xl);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--s-lg);
+    }
+
+    /* Project card state machine */
+    .project-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: var(--s-xl);
+      overflow: hidden;
+      /* Elevation: tonal shift + subtle shadow on hover */
+      transition:
+        transform var(--dur-standard) var(--ease-snappy),
+        box-shadow var(--dur-standard) var(--ease-out),
+        border-color var(--dur-quick) var(--ease-out);
+      /* Hover intent: 50ms delay on enter via transition-delay hack */
+    }
+
+    /* State: Hover */
+    .project-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      border-color: var(--border);
+    }
+
+    /* State: Active/Pressed */
+    .project-card:active {
+      transform: translateY(0) scale(0.995);
+      transition-duration: 60ms;
+    }
+
+    /* State: Focused */
+    .project-card:focus-within {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Bento grid sizing */
+    .project-card:nth-child(1) {
+      grid-column: span 7;
+    }
+
+    .project-card:nth-child(2) {
+      grid-column: span 5;
+    }
+
+    .project-card:nth-child(3) {
+      grid-column: span 12;
+    }
+
+    @media (max-width: 768px) {
+      .project-card:nth-child(1),
+      .project-card:nth-child(2),
+      .project-card:nth-child(3) {
+        grid-column: span 12;
+      }
+    }
+
+    .project-category {
+      font-size: var(--t-overline);
+      font-weight: 500;
+      letter-spacing: var(--ls-wider);
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--s-sm);
+    }
+
+    .project-title {
+      font-family: var(--font-serif);
+      font-size: var(--t-title-2);
+      font-weight: 600;
+      line-height: var(--lh-title);
+      color: var(--text-primary);
+      margin-bottom: var(--s-md);
+    }
+
+    .project-desc {
+      font-size: var(--t-body);
+      color: var(--text-secondary);
+      margin-bottom: var(--s-lg);
+      max-width: 100%;
+    }
+
+    .project-metrics {
+      display: flex;
+      gap: var(--s-xl);
+      padding-top: var(--s-lg);
+      border-top: 1px solid var(--border-light);
+    }
+
+    .metric {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-xs);
+    }
+
+    .metric-value {
+      font-family: var(--font-serif);
+      font-size: var(--t-headline);
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .metric-label {
+      font-size: var(--t-caption);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    /* ═══════════════════════════════════════════
+       PROCESS
+       Phase 2: Content Architecture (L2 engaged)
+       Density: comfortable (reading)
+       ═══════════════════════════════════════════ */
+    .process-section {
+      background: var(--bg-alt);
+    }
+
+    .process-content {
+      max-width: var(--reading);
+    }
+
+    .process-content h2 {
+      margin-bottom: var(--s-lg);
+    }
+
+    .process-content > p {
+      font-size: var(--t-body-lg);
+      color: var(--text-secondary);
+      margin-bottom: var(--s-xl);
+    }
+
+    .process-steps {
+      list-style: none;
+      counter-reset: process;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-xl);
+      margin-top: var(--s-2xl);
+    }
+
+    .process-step {
+      position: relative;
+      padding-left: var(--s-3xl);
+    }
+
+    .process-step::before {
+      counter-increment: process;
+      content: counter(process, decimal-leading-zero);
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-family: var(--font-mono);
+      font-size: var(--t-caption);
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: var(--ls-wide);
+    }
+
+    .process-step h4 {
+      font-size: var(--t-headline);
+      margin-bottom: var(--s-xs);
+    }
+
+    .process-step p {
+      color: var(--text-secondary);
+      font-size: var(--t-body);
+    }
+
+    /* ═══════════════════════════════════════════
+       CONTACT
+       Phase 2: Content Architecture (L3 committed)
+       Tonal register: urgent, clear
+       ═══════════════════════════════════════════ */
+    .contact-section {
+      text-align: center;
+      padding-bottom: var(--s-5xl);
+    }
+
+    .contact-section h2 {
+      margin-bottom: var(--s-md);
+    }
+
+    .contact-section > p {
+      margin: 0 auto var(--s-xl);
+      color: var(--text-secondary);
+      font-size: var(--t-body-lg);
+    }
+
+    .contact-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-sm);
+      padding: var(--s-md) var(--s-2xl);
+      background: var(--accent);
+      color: var(--text-inverse);
+      font-family: var(--font-sans);
+      font-size: var(--t-caption);
+      font-weight: 600;
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition:
+        background var(--dur-standard) var(--ease-snappy),
+        transform var(--dur-emphasized) var(--ease-snappy),
+        box-shadow var(--dur-standard) var(--ease-out);
+    }
+
+    .contact-cta:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(196, 93, 62, 0.25);
+    }
+
+    .contact-cta:active {
+      background: var(--accent-active);
+      transform: scale(0.98) translateY(0);
+      transition-duration: 60ms;
+    }
+
+    .contact-cta:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .contact-meta {
+      margin-top: var(--s-xl);
+      font-size: var(--t-caption);
+      color: var(--text-tertiary);
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════ */
+    .footer {
+      padding: var(--s-xl) 0;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--t-caption);
+      color: var(--text-tertiary);
+    }
+
+    @media (max-width: 640px) {
+      .footer-inner {
+        flex-direction: column;
+        gap: var(--s-sm);
+        text-align: center;
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       PHASE 8: MOTION SYSTEM
+       Scroll-triggered reveals + stagger cascades
+       ═══════════════════════════════════════════ */
+
+    /* Base reveal state: hidden */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition:
+        opacity var(--dur-emphasized) var(--ease-gentle),
+        transform var(--dur-emphasized) var(--ease-gentle);
+    }
+
+    /* Revealed state */
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger patterns for project cards */
+    .project-card.reveal.visible:nth-child(1) { transition-delay: 0ms; }
+    .project-card.reveal.visible:nth-child(2) { transition-delay: 60ms; }
+    .project-card.reveal.visible:nth-child(3) { transition-delay: 120ms; }
+
+    /* Stagger for process steps */
+    .process-step.reveal.visible:nth-child(1) { transition-delay: 0ms; }
+    .process-step.reveal.visible:nth-child(2) { transition-delay: 40ms; }
+    .process-step.reveal.visible:nth-child(3) { transition-delay: 80ms; }
+    .process-step.reveal.visible:nth-child(4) { transition-delay: 120ms; }
+
+    /* Nav link stagger on load */
+    .nav-link {
+      opacity: 0;
+      animation: nav-enter var(--dur-emphasized) var(--ease-gentle) forwards;
+    }
+
+    .nav-link:nth-child(1) { animation-delay: 0ms; }
+    .nav-link:nth-child(2) { animation-delay: 20ms; }
+    .nav-link:nth-child(3) { animation-delay: 40ms; }
+    .nav-link:nth-child(4) { animation-delay: 60ms; }
+
+    @keyframes nav-enter {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero entrance: invested animation for first impression */
+    .hero-name {
+      opacity: 0;
+      animation: hero-enter var(--dur-scenic) var(--ease-gentle) forwards;
+      animation-delay: 100ms;
+    }
+
+    .hero-title {
+      opacity: 0;
+      animation: hero-enter var(--dur-scenic) var(--ease-gentle) forwards;
+      animation-delay: 200ms;
+    }
+
+    .hero-cta {
+      opacity: 0;
+      animation: hero-enter var(--dur-scenic) var(--ease-gentle) forwards;
+      animation-delay: 300ms;
+    }
+
+    @keyframes hero-enter {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══════════════════════════════════════════
+       REDUCED MOTION
+       Phase 8: prefers-reduced-motion fallback
+       ═══════════════════════════════════════════ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+
+      .nav-link {
+        opacity: 1;
+      }
+
+      .hero-name,
+      .hero-title,
+      .hero-cta {
+        opacity: 1;
+        animation: none;
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+       Phase 9: Responsive behavior
+       ═══════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      html {
+        font-size: 15px;
+      }
+
+      .hero-name {
+        font-size: var(--t-title-1);
+      }
+
+      .project-title {
+        font-size: var(--t-headline);
+      }
+
+      .project-metrics {
+        flex-direction: column;
+        gap: var(--s-md);
+      }
+
+      .section-major {
+        padding-top: var(--s-4xl);
+        padding-bottom: var(--s-4xl);
+      }
+
+      .nav-links {
+        gap: var(--s-md);
+      }
+    }
+
+    @media (max-width: 375px) {
+      .container,
+      .narrow {
+        padding: 0 var(--s-md);
+      }
+
+      .hero-name {
+        font-size: var(--t-title-2);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       NAVIGATION
+       Phase 7: Interaction States (nav link state machine)
+       ═══════════════════════════════════════════ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">AC</a>
+      <ul class="nav-links">
+        <li><a href="#work" class="nav-link">Work</a></li>
+        <li><a href="#process" class="nav-link">Process</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════
+       HERO
+       Phase 2: L0 (immediate disclosure)
+       Phase 6: Dominant element (name)
+       ═══════════════════════════════════════════ -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <p class="overline" style="margin-bottom: var(--s-md);">Design Engineer</p>
+        <h1 class="hero-name">Alex Chen</h1>
+        <p class="hero-title">
+          I build interfaces where every decision is intentional. Typography, motion, color, and interaction states working together to create experiences that feel inevitable.
+        </p>
+        <a href="#work" class="hero-cta">
+          View selected work
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Gap: tonal shift breathing room -->
+  <div class="gap" role="separator" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════
+       PROJECTS
+       Phase 2: L1 (first scroll)
+       Phase 6: Bento grid composition
+       ═══════════════════════════════════════════ -->
+  <section id="work" class="section-major">
+    <div class="container">
+      <div class="projects-header reveal">
+        <p class="overline" style="margin-bottom: var(--s-sm);">Selected Work</p>
+        <h2>Projects that earned their decisions</h2>
+      </div>
+
+      <div class="projects-grid">
+        <!-- Project 1: spans 7 columns -->
+        <article class="project-card reveal" tabindex="0">
+          <p class="project-category">Fintech Platform</p>
+          <h3 class="project-title">Meridian Payments</h3>
+          <p class="project-desc">
+            A payment orchestration dashboard for a Series C fintech company. Reduced onboarding friction by restructuring the information architecture around progressive disclosure: merchants see critical metrics immediately, configuration details only when they engage.
+          </p>
+          <div class="project-metrics">
+            <div class="metric">
+              <span class="metric-value">47<span style="font-size: 0.6em; color: var(--text-tertiary);">ms</span></span>
+              <span class="metric-label">Median response</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">34<span style="font-size: 0.6em; color: var(--text-tertiary);">%</span></span>
+              <span class="metric-label">Onboarding lift</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">12<span style="font-size: 0.6em; color: var(--text-tertiary);">wk</span></span>
+              <span class="metric-label">Delivery time</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 2: spans 5 columns -->
+        <article class="project-card reveal" tabindex="0">
+          <p class="project-category">Developer Tools</p>
+          <h3 class="project-title">Schema Studio</h3>
+          <p class="project-desc">
+            A visual database schema designer. Built a 12-state interaction system for every node: default, hover, active, focused, selected, dragging, drop-target, and more. The interface feels alive because every state has distinct visual expression and spring-based motion.
+          </p>
+          <div class="project-metrics">
+            <div class="metric">
+              <span class="metric-value">8.2<span style="font-size: 0.6em; color: var(--text-tertiary);">k</span></span>
+              <span class="metric-label">Weekly active</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">4.9<span style="font-size: 0.6em; color: var(--text-tertiary);">/5</span></span>
+              <span class="metric-label">User rating</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 3: spans 12 columns (full width) -->
+        <article class="project-card reveal" tabindex="0">
+          <p class="project-category">Healthcare</p>
+          <h3 class="project-title">Vital Reader</h3>
+          <p class="project-desc">
+            A patient portal for a regional healthcare network. Designed a dual-theme system with 10-step tonal palettes, elevation-through-tone surfaces, and high-contrast mode for accessibility compliance. The dark mode isn't an inversion — it's a complete recalculation with desaturated accents to avoid the "neon glow" effect common in AI-generated dark themes.
+          </p>
+          <div class="project-metrics">
+            <div class="metric">
+              <span class="metric-value">2.4<span style="font-size: 0.6em; color: var(--text-tertiary);">M</span></span>
+              <span class="metric-label">Patient records</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">WCAG<span style="font-size: 0.6em; color: var(--text-tertiary);"> 2.1 AA</span></span>
+              <span class="metric-label">Compliance</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">3<span style="font-size: 0.6em; color: var(--text-tertiary);"> modes</span></span>
+              <span class="metric-label">Color contexts</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gap: tonal shift breathing room -->
+  <div class="gap" role="separator" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════
+       PROCESS
+       Phase 2: L2 (engaged scroll)
+       Density: comfortable (reading)
+       ═══════════════════════════════════════════ -->
+  <section id="process" class="process-section section-major">
+    <div class="narrow">
+      <div class="process-content">
+        <p class="overline" style="margin-bottom: var(--s-sm);">How I Work</p>
+        <h2>Design as a system of decisions</h2>
+        <p>
+          Every project starts with the same question: what does this interface need to make inevitable? Not beautiful — inevitable. The kind of design where removing any element would make the experience worse, not better.
+        </p>
+
+        <ol class="process-steps">
+          <li class="process-step reveal">
+            <h4>Establish the foundation</h4>
+            <p>Define purpose in one sentence. Identify the audience. Choose an aesthetic direction that is specific, not "clean and modern." Document anti-directions: what you are not doing, and why. This is the layer most designers skip, and it is the layer that makes every subsequent decision defensible.</p>
+          </li>
+          <li class="process-step reveal">
+            <h4>Structure the narrative</h4>
+            <p>Map content as a story with rising action, not a flat list. Assign disclosure levels: what is visible immediately, what requires a scroll, what requires engagement. Design section-to-section tonal shifts so the page breathes and accelerates. Replace generic data with specific, credible metrics.</p>
+          </li>
+          <li class="process-step reveal">
+            <h4>Build the visual system</h4>
+            <p>Create a type scale with dramatic ratios (minimum 2:1 display-to-body). Generate a 10-step tonal palette from a mood-driven hue. Establish an 8px spatial grid where type and space are mathematically aligned. Design elevation through tonal surface shifts, not drop shadows.</p>
+          </li>
+          <li class="process-step reveal">
+            <h4>Define interaction and motion</h4>
+            <p>Map 12-state machines for every interactive element. Specify asymmetric transition timing (entries slower than exits for positive states). Apply spring physics instead of generic easing. Use stagger cascades for grouped elements. Respect reduced-motion preferences with instant fallbacks.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gap: tonal shift breathing room -->
+  <div class="gap" role="separator" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════
+       CONTACT
+       Phase 2: L3 (committed scroll)
+       Tonal register: urgent, clear
+       ═══════════════════════════════════════════ -->
+  <section id="contact" class="contact-section section-standard">
+    <div class="container">
+      <p class="overline" style="margin-bottom: var(--s-sm);">Get in Touch</p>
+      <h2>Let us build something inevitable</h2>
+      <p>
+        I work with teams who believe design is a system of decisions, not a coat of paint. If that sounds like you, let us talk.
+      </p>
+      <button class="contact-cta" type="button">
+        Start a conversation
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <p class="contact-meta">
+        Available for projects starting June 2025
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>Alex Chen — Design Engineer</p>
+      <p>Built with intention, not defaults</p>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════
+       PHASE 8: MOTION SYSTEM (JavaScript)
+       Scroll-triggered reveals via IntersectionObserver
+       ═══════════════════════════════════════════ -->
+  <script>
+    (function() {
+      // Scroll-triggered reveal using IntersectionObserver
+      const reveals = document.querySelectorAll('.reveal');
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      reveals.forEach(function(el) {
+        observer.observe(el);
+      });
+
+      // Smooth scroll for nav links
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+
+      // Active nav state based on scroll position
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      function updateActiveNav() {
+        const scrollPos = window.scrollY + 100;
+
+        sections.forEach(function(section) {
+          const top = section.offsetTop;
+          const bottom = top + section.offsetHeight;
+          const id = section.getAttribute('id');
+
+          if (scrollPos >= top && scrollPos < bottom) {
+            navLinks.forEach(function(link) {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === '#' + id) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      }
+
+      window.addEventListener('scroll', updateActiveNav);
+      updateActiveNav();
+    })();
+  </script>
+
+</body>
+</html>
