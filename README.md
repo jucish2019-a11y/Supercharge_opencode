@@ -2,7 +2,7 @@
 
 A library of **82 specialized skills** covering design, engineering, infrastructure, and process, so your AI assistant makes decisions it can defend.
 
-**[View the full showcase →](https://jucish2019-a11y.github.io/OpenCodexGlm5.1/)**
+**[View the full showcase →](https://jucish2019-a11y.github.io/Supercharge_opencode/)**
 
 ---
 
@@ -188,17 +188,17 @@ These skills are installed in OpenCode's `.opencode/skills/` directory. They're 
 
 ```bash
 # Clone the repo
-git clone https://github.com/jucish2019-a11y/OpenCodexGlm5.1.git
+git clone https://github.com/jucish2019-a11y/Supercharge_opencode.git
 
 # Copy skills into your project's .opencode/skills/ directory
-cp -r OpenCodexGlm5.1/.opencode/skills/* /your/project/.opencode/skills/
+cp -r Supercharge_opencode/.opencode/skills/* /your/project/.opencode/skills/
 ```
 
 Or install individual skills by copying a skill's folder into your project's `.opencode/skills/` directory:
 
 ```bash
 # Example: install just the design-foundations skill
-cp -r OpenCodexGlm5.1/.opencode/skills/design-foundations /your/project/.opencode/skills/
+cp -r Supercharge_opencode/.opencode/skills/design-foundations /your/project/.opencode/skills/
 ```
 
 Each skill is a single `SKILL.md` file: self-contained, no dependencies.
