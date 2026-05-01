@@ -1,6 +1,6 @@
 # Supercharging OpenCode
 
-A library of **82 specialized skills** covering design, engineering, infrastructure, and process, so your AI assistant makes decisions it can defend.
+A library of **85 specialized skills** covering design, engineering, infrastructure, and process, so your AI assistant makes decisions it can defend.
 
 **[View the full showcase →](https://jucish2019-a11y.github.io/Supercharge_opencode/)**
 
@@ -20,13 +20,13 @@ Each skill doesn't just tell you *what* to do. It explains *why*: the principle 
 
 | Category | Skills | What it covers |
 |----------|--------|----------------|
-| **Design Foundations & Visual Theory** | 6 | Purpose, composition, proportions, color science, auditing, AI tell detection |
-| **Typography & Color** | 3 | Font pairing, type scales, mood-to-hue palettes, dark mode |
+| **Design Foundations & Visual Theory** | 7 | Purpose, composition, proportions, color science, editorial structure, auditing, AI tell detection |
+| **Typography & Color** | 3 | Font pairing, type scales, mood-to-hue palettes with tonal systems, dark mode |
 | **Layout & Spacing** | 2 | Gestalt grouping, responsive breakpoints |
 | **Design Systems & Tokens** | 3 | Token architecture, component libraries, design specs |
-| **Interface & User Experience** | 7 | End-to-end UI design, UX patterns, accessibility, landing pages |
+| **Interface & User Experience** | 8 | Stitch-quality UI design, UX patterns, interaction states, accessibility, landing pages |
 | **Visual Assets** | 3 | Icons, illustration, data visualization |
-| **Motion & Animation** | 3 | Micro-interactions, choreography, motion systems |
+| **Motion & Animation** | 4 | Micro-interactions, choreography, motion systems, premium spring physics |
 | **Component Architecture** | 6 | React, Next.js, CSS, state management, mobile |
 | **TypeScript & Languages** | 3 | Type architecture, type safety, Python |
 | **API & Backend** | 5 | REST/GraphQL design, Node.js backends, error handling |
@@ -44,7 +44,7 @@ Every design skill works in two modes:
 
 **Checker mode**: Audit existing work. Run a 10-dimension review: purpose, typography, proportions, composition, hierarchy, color, semantic HTML, motion, responsiveness, and design identity. Every finding names the principle it violates and explains why it matters.
 
-**Applier mode**: Build from scratch. Follow gated phases: foundations → type system → color system → proportions → composition → build → audit. Each phase produces decisions the next phase depends on.
+**Applier mode**: Build from scratch. Follow the 9-phase gated workflow: foundations → content architecture → type system → color system → spatial system → composition → interaction states → motion system → polish and ship. Each phase produces decisions the next phase depends on.
 
 ---
 
@@ -57,12 +57,15 @@ These are the core ideas that run through the library:
 - **Composition over decoration**: One dominant element. Not everything gets a card. White space is the most powerful hierarchy tool.
 - **Mood drives hue**: Color starts from the feeling the product should communicate, not from "what looks nice."
 - **Motion is information**: Remove an animation. If you lost information, it was functional. If not, it was decoration.
-- **Eight interaction states**: Every element needs default, hover, focus, active, disabled, loading, error, and success.
+- **Twelve interaction states**: Every element needs default, hover, active, focused, selected, disabled, loading, error — and the premium ones: focused+hovered, success, drag, drop-target, gesture-tracked.
+- **Spring physics, not easing curves**: Premium interfaces use mass, tension, and friction — not `ease-in-out`.
+- **Frequency determines animation investment**: High-frequency actions should be instant. Low-frequency actions should be invested.
+- **Elevation through tonal shifts, not shadows**: Premium interfaces use surface color variations, not drop shadows, to indicate depth.
 - **Strip AI tells**: Default fonts, cyan-on-dark, identical card grids, centering disease, equal spacing, glassmorphism, neon accents, and uniform animations are signals. Replace them with defensible choices.
 
 ---
 
-## All 82 Skills
+## All 85 Skills
 
 ### Design Foundations & Visual Theory
 - **design-foundations**: Purpose, audience, aesthetic direction
@@ -70,11 +73,12 @@ These are the core ideas that run through the library:
 - **proportions**: Intentional type and space ratio systems
 - **design-audit**: 10-dimension principle-based review
 - **strip-ai-tells**: Detect and replace AI-generated design defaults
+- **editorial-design**: Narrative arcs, progressive disclosure, data display grammar
 - **visual-hierarchy**: *(redirects to composition, proportions, spatial-design)*
 
 ### Typography & Color
 - **typography**: Font pairing, modular scales, vertical rhythm
-- **color-palette**: Mood-to-hue semantic color systems, accessibility
+- **color-palette**: Mood-to-hue, tonal palettes, elevation, contextual modes
 - **dark-mode**: Dual-theme contrast and elevation
 
 ### Layout & Spacing
@@ -87,9 +91,10 @@ These are the core ideas that run through the library:
 - **design-spec**: Pixel-perfect specs with all states
 
 ### Interface & User Experience
-- **ui-design**: End-to-end page design workflow (orchestrator)
+- **ui-design**: 9-phase Stitch-quality orchestrator workflow
 - **ux-patterns**: Navigation, forms, feedback patterns
 - **interaction-design**: Drag, gestures, command palette, keyboard
+- **interaction-states**: 12-state taxonomy, frequency-novelty matrix, transitions
 - **accessibility**: WCAG compliance, ARIA, keyboard navigation
 - **landing-page**: High-converting pages with narrative arc
 - **content-design**: UX writing, microcopy, tone of voice
@@ -104,6 +109,7 @@ These are the core ideas that run through the library:
 - **micro-interactions**: Hover, loading, transition animation states
 - **animation-choreography**: Multi-element page transitions
 - **motion-system**: Easing, duration, choreography systems
+- **premium-motion**: Spring physics, stagger cascades, container transforms
 
 ### Component Architecture
 - **react**: Modern React best practices

@@ -247,6 +247,74 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);       /* neutral for non-opinionated
 
 **Why this matters:** Hue-shifted shadows feel more natural and integrated. Pure black shadows look harsh in warm palettes; pure black shadows look flat in cool palettes. A hint of color in the shadow ties it to the palette.
 
+## Tonal palette and elevation system
+
+Premium interfaces don't use drop shadows to indicate elevation. They use tonal shifts — lighter or darker steps within the same hue — to create depth hierarchies that feel natural and cohesive.
+
+### Generating a 10-step tonal palette
+
+For every role color, generate 10 tonal steps from lightest to darkest:
+
+```
+Step 5:  Near-white tint (backgrounds, surfaces on dark)
+Step 10: Very light tint (surface-container-low)
+Step 20: Light tint (surface-container)
+Step 30: Soft tint (surface-container-high)
+Step 40: Medium tint (borders on dark, muted text on light)
+Step 50: Mid (disabled text, dividers)
+Step 60: Medium shade (secondary text on dark)
+Step 70: Dark shade (primary text on dark)
+Step 80: Deep shade (headings on dark, borders on light)
+Step 90: Near-black shade (text on light, dark backgrounds)
+```
+
+Use HSL manipulation: keep the same hue, adjust lightness in 10% increments, slightly reduce saturation as lightness increases to prevent washed-out tints.
+
+### Elevation through tonal shifts (not shadows)
+
+Instead of `box-shadow` for elevation, use surface tonal steps:
+
+```
+Level 0: surface             (base layer, e.g. #FFFFFF or neutral-50)
+Level 1: surface-container-low   (+1 tonal step, e.g. neutral-100)
+Level 2: surface-container       (+2 tonal steps, e.g. neutral-200)
+Level 3: surface-container-high  (+3 tonal steps, e.g. neutral-300)
+Level 4: surface-container-max   (+4 tonal steps, for highest elevation)
+```
+
+For dark mode, invert the direction:
+```
+Level 0: surface             (e.g. #121212 or neutral-900)
+Level 1: surface-container-low   (neutral-800, slightly lighter)
+Level 2: surface-container       (neutral-700)
+Level 3: surface-container-high  (neutral-600)
+Level 4: surface-container-max   (neutral-500)
+```
+
+Why this works: tonal elevation creates depth without the visual noise of shadows. It scales to any density or context. Material Design 3 uses this system, and it is the approach Stripe, Linear, and Vercel all use.
+
+### Color as information architecture
+
+Use color to mark structure, not just decorate:
+
+- **Product categories**: Payments = blue, Billing = green, Connect = purple (Stripe's approach)
+- **Navigation sections**: Dashboard = neutral, Settings = accent tint, Alerts = warning
+- **Density levels**: Compact sections get a subtle background tint, comfortable sections stay on base surface
+- **Interactive vs. static**: Interactive elements get primary color borders/backgrounds; static elements use neutrals
+
+## Contextual color modes
+
+Beyond light and dark, premium interfaces support contextual modes:
+
+| Mode | Purpose | Key changes |
+|------|---------|-------------|
+| Light | Default daytime use | Full chromatic, standard contrast |
+| Dark | Low-light, OLED-friendly | Recalculated tones (not inverted), desaturated accents |
+| High contrast | WCAG AAA, visual impairment | Augmented borders, stronger text contrast (7:1+) |
+| Reduced transparency | Difficulty with glass/blur effects | Replace `backdrop-filter: blur()` with solid surfaces |
+
+Each mode remaps the same semantic tokens to different tonal values. The token names stay the same; only the values change.
+
 ## Quality checklist
 
 - [ ] Palette built from mood → hue → scheme (not "what looks good")
@@ -259,6 +327,10 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);       /* neutral for non-opinionated
 - [ ] Shadows use hue-shifted color, not pure black
 - [ ] Colorblind safety: no information conveyed by color alone (use icons + text too)
 - [ ] No AI color tells: no cyan-on-dark, no purple-to-blue gradients, no neon accents on dark
+- [ ] 10-step tonal palette generated for primary hue
+- [ ] Elevation uses tonal shifts, not drop shadows
+- [ ] Color marks structural information (categories, sections, density levels)
+- [ ] Contextual modes defined (light, dark, high-contrast, reduced-transparency)
 
 ## Anti-patterns I avoid
 
@@ -271,3 +343,6 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);       /* neutral for non-opinionated
 - Cyan-on-dark or purple-to-blue gradients — the fastest AI color tells
 - Using the brand color at full saturation for large backgrounds — overwhelming; use lighter tints
 - Generating a palette from the brand color without checking contrast — many brand colors fail AA on white
+- Using drop shadows for elevation instead of tonal shifts — premium interfaces use surface color, not shadows
+- Using a single surface color for all containers — tonal variation creates depth and hierarchy
+- Treating dark mode as a simple inversion — dark mode requires recalculated tones and desaturated accents
