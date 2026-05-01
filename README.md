@@ -4,6 +4,10 @@ A library of **85 specialized skills** covering design, engineering, infrastruct
 
 **[View the full showcase →](https://jucish2019-a11y.github.io/Supercharge_opencode/)**
 
+**Live demonstrations of the design system:**
+- **[Portfolio page](https://jucish2019-a11y.github.io/Supercharge_opencode/portfolio.html)** — Editorial aesthetic, warm terracotta, light-first
+- **[Product page](https://jucish2019-a11y.github.io/Supercharge_opencode/product.html)** — Technical aesthetic, indigo accent, dark-first
+
 ---
 
 ## What is this?
