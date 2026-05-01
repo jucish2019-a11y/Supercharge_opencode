@@ -53,30 +53,281 @@ Use this skill when:
 
 5. **Implement the toggle** — Use `data-theme` attribute on `<html>`, persist to `localStorage`, respect `prefers-color-scheme`.
 
+## Tailwind dark mode configuration
+
+```ts
+// tailwind.config.ts
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
+  darkMode: ['class', '[data-theme="dark"]'], // or 'media' for OS preference only
+  content: ['./src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+      },
+    },
+  },
+};
+
+export default config;
+```
+
+## Theme switching logic
+
+### React context with next-themes
+
+```tsx
+// providers/theme-provider.tsx
+'use client';
+
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import { type ReactNode } from 'react';
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  return (
+    <NextThemesProvider
+      attribute="data-theme"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange={false}
+    >
+      {children}
+    </NextThemesProvider>
+  );
+}
+
+// Theme toggle component
+'use client';
+
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
+
+export function ThemeToggle() {
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return <div className="w-9 h-9" />;
+
+  return (
+    <button
+      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+      className="p-2 rounded-md hover:bg-accent"
+      aria-label="Toggle theme"
+    >
+      {resolvedTheme === 'dark' ? <SunIcon /> : <MoonIcon />}
+    </button>
+  );
+}
+```
+
+### Manual theme implementation (without next-themes)
+
+```tsx
+// hooks/use-theme.ts
+import { useState, useEffect, useCallback } from 'react';
+
+type Theme = 'light' | 'dark' | 'system';
+
+function getSystemTheme(): 'light' | 'dark' {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function getResolvedTheme(theme: Theme): 'light' | 'dark' {
+  if (theme === 'system') return getSystemTheme();
+  return theme;
+}
+
+export function useTheme() {
+  const [theme, setThemeState] = useState<Theme>(() => {
+    return (localStorage.getItem('theme') as Theme) ?? 'system';
+  });
+
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(
+    getResolvedTheme(theme)
+  );
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const resolved = getResolvedTheme(theme);
+
+    root.setAttribute('data-theme', resolved);
+    root.classList.remove('light', 'dark');
+    root.classList.add(resolved);
+
+    setResolvedTheme(resolved);
+  }, [theme]);
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = () => {
+      if (theme === 'system') {
+        setResolvedTheme(getSystemTheme());
+      }
+    };
+
+    media.addEventListener('change', handler);
+    return () => media.removeEventListener('change', handler);
+  }, [theme]);
+
+  const setTheme = useCallback((newTheme: Theme) => {
+    localStorage.setItem('theme', newTheme);
+    setThemeState(newTheme);
+  }, []);
+
+  return { theme, setTheme, resolvedTheme };
+}
+```
+
+## FOUC prevention
+
+```html
+<!-- Add to <head> to prevent flash of unstyled content -->
+<script>
+  (function() {
+    const theme = localStorage.getItem('theme') ?? 'system';
+    const resolved = theme === 'system'
+      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : theme;
+    document.documentElement.setAttribute('data-theme', resolved);
+    document.documentElement.classList.add(resolved);
+  })();
+</script>
+```
+
+## Chart and table adaptations
+
+```tsx
+// Chart colors for dark mode
+const chartColors = {
+  light: {
+    grid: '#e5e5e5',
+    text: '#171717',
+    series: ['#2563eb', '#16a34a', '#dc2626', '#ca8a04'],
+  },
+  dark: {
+    grid: '#262626',
+    text: '#e5e5e5',
+    series: ['#3b82f6', '#22c55e', '#ef4444', '#eab308'],
+  },
+};
+
+// Table adaptations
+const tableStyles = {
+  light: 'bg-white border-gray-200',
+  dark: 'bg-neutral-900 border-neutral-800',
+};
+```
+
 ## CSS implementation
 
 ```css
 :root, [data-theme="light"] {
-  --bg-primary: #FFFFFF;
-  --bg-secondary: #F5F5F5;
-  --text-primary: #171717;
-  --border: rgba(0,0,0,0.06);
+  --background: 0 0% 100%;
+  --foreground: 0 0% 9%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 9%;
+  --primary: 221 83% 53%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222 47% 11%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 221 83% 53%;
 }
 
 [data-theme="dark"] {
-  --bg-primary: #0A0A0A;
-  --bg-secondary: #141414;
-  --text-primary: #F5F5F5;
-  --border: rgba(255,255,255,0.06);
+  --background: 0 0% 4%;
+  --foreground: 0 0% 96%;
+  --card: 0 0% 4%;
+  --card-foreground: 0 0% 96%;
+  --popover: 0 0% 4%;
+  --popover-foreground: 0 0% 96%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 217 19% 27%;
+  --secondary-foreground: 0 0% 96%;
+  --muted: 217 19% 27%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 217 19% 27%;
+  --accent-foreground: 0 0% 96%;
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 0% 96%;
+  --border: 217 19% 27%;
+  --input: 217 19% 27%;
+  --ring: 224 76% 48%;
 }
 
-/* Transition */
-body {
-  transition: background-color 0.2s, color 0.2s;
+/* Smooth transitions */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
 }
 ```
 
-## Guidelines
+## Quality checklist
+
+- [ ] Semantic color tokens defined for all UI elements
+- [ ] Dark mode values tested for contrast (4.5:1 minimum)
+- [ ] Elevation hierarchy works in dark mode (lighter = higher)
+- [ ] Accent colors desaturated for dark backgrounds
+- [ ] Images and media adapted for dark mode
+- [ ] Theme toggle persists to localStorage
+- [ ] System preference respected on first visit
+- [ ] FOUC prevented with inline script
+- [ ] Charts and data visualizations have dark variants
+- [ ] Reduced motion respected for theme transitions
+
+## Anti-patterns I avoid
 
 - Never use absolute black (#000000) for backgrounds — use near-black (#0A0A0A to #141414)
 - Never use absolute white (#FFFFFF) for text on dark — use off-white (#F5F5F5)

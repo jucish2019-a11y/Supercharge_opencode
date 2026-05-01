@@ -39,6 +39,97 @@ Use this skill when:
 6. **Set up monitoring** — Log aggregation, error tracking, deployment annotations in metrics dashboards.
 7. **Document the runbook** — Step-by-step deploy, verify, and rollback procedures.
 
+## Platform-specific deployment
+
+### Vercel
+
+```bash
+# Production deployment
+vercel --prod
+
+# Preview deployment (per PR)
+vercel
+
+# Environment variables
+vercel env add DATABASE_URL production
+```
+
+### AWS (ECS/Fargate)
+
+```yaml
+# docker-compose.yml for ECS
+deployment:
+  strategy: rolling
+  maxUnavailable: 0
+  maxSurge: 1
+
+healthcheck:
+  path: /health
+  interval: 30s
+  timeout: 5s
+  retries: 3
+```
+
+### Fly.io
+
+```bash
+# Deploy
+fly deploy
+
+# Scale
+fly scale count 3
+
+# Rollback
+fly rollback
+```
+
+## Health check endpoint
+
+```ts
+// app/health/route.ts
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  const checks = {
+    database: await checkDatabase(),
+    redis: await checkRedis(),
+    memory: process.memoryUsage().heapUsed < 500 * 1024 * 1024,
+  };
+
+  const healthy = Object.values(checks).every(Boolean);
+
+  return NextResponse.json(
+    { status: healthy ? 'healthy' : 'unhealthy', checks },
+    { status: healthy ? 200 : 503 }
+  );
+}
+
+async function checkDatabase(): Promise<boolean> {
+  try {
+    await db.$queryRaw`SELECT 1`;
+    return true;
+  } catch {
+    return false;
+  }
+}
+```
+
+## Database migration during deploy
+
+```
+Safe migration strategy:
+1. Deploy code that can handle BOTH old and new schema
+2. Run migration (backward-compatible: add column, create table)
+3. Verify migration succeeded
+4. Deploy code that uses new schema
+5. Later: run cleanup migration (drop old column)
+
+Never:
+- Drop columns before code stops using them
+- Rename columns in place (add new, migrate data, drop old)
+- Make non-backward-compatible changes in a single deploy
+```
+
 ## Deployment checklist
 
 Before every deployment:

@@ -24,6 +24,17 @@ Use this skill when:
 
 ## How I work
 
+### Checker mode (auditing existing motion)
+
+1. **Test for purpose** — Remove each animation. Did you lose information? If not, it was decorative.
+2. **Check timing consistency** — Are all standard transitions the same duration? Do micro/standard/complex durations follow a scale?
+3. **Check easing consistency** — Are entrances using decelerate? Exits using accelerate? Or is everything on `ease`?
+4. **Check choreography** — Do groups enter together? Or do items fire independently with no relationship?
+5. **Check the AI tell** — Does everything fade in from below with the same timing? That's the most common motion convergence.
+6. **Check reduced motion** — Is `prefers-reduced-motion` respected?
+
+### Applier mode (building a motion system)
+
 1. **Define the motion language** — Choose what motion means in this product. Is it playful? Efficient? Bold? Calm? Motion personality must match brand personality.
 2. **Build the easing library** — Define a small set of easing curves, each with a purpose:
 3. **Set the duration scale** — Map durations to interaction types:

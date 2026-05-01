@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>opencode skills: 82 specialized skills for AI-assisted development</title>
+  <meta name="description" content="A library of 82 skills covering design, engineering, infrastructure, and process — so your AI assistant makes decisions it can defend.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #faf7f2;
+      --bg-alt:    #f0ebe3;
+      --text:      #2a2520;
+      --text-mid:  #5c544c;
+      --text-light:#8a8279;
+      --accent:    #c45d3e;
+      --accent-hover: #a84d33;
+      --sage:      #6b7c6e;
+      --rule:      #d8d0c6;
+
+      --serif: 'Source Serif 4', 'Georgia', 'Times New Roman', serif;
+      --sans:  -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --mono:  'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+
+      --s-xs:  0.8125rem;
+      --s-sm:  1rem;
+      --s-md:  1.333rem;
+      --s-lg:  1.777rem;
+      --s-xl:  2.369rem;
+      --s-2xl: 3.157rem;
+      --s-3xl: 4.209rem;
+
+      --space-xs:  0.5rem;
+      --space-sm:  1rem;
+      --space-md:  1.5rem;
+      --space-lg:  2.5rem;
+      --space-xl:  4rem;
+      --space-2xl: 6.5rem;
+      --space-3xl: 10rem;
+    }
+
+    html {
+      font-size: clamp(15px, 1vw + 12px, 18px);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .container {
+      max-width: 72rem;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    .narrow {
+      max-width: 42rem;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--serif);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      max-width: 38em;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.15em;
+      transition: color 0.15s ease-out;
+    }
+    a:hover { color: var(--accent-hover); }
+
+    /* ── Hero ── */
+    .hero {
+      padding: var(--space-3xl) 0 var(--space-2xl);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: var(--s-xs);
+      color: var(--text-light);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-md);
+    }
+
+    .hero h1 {
+      font-size: clamp(var(--s-2xl), 5vw + 1rem, var(--s-3xl));
+      max-width: 16em;
+      margin-bottom: var(--space-lg);
+      color: var(--text);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: var(--s-md);
+      color: var(--text-mid);
+      max-width: 32em;
+      line-height: 1.5;
+    }
+
+    /* ── Problem ── */
+    .problem {
+      padding: var(--space-2xl) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: var(--space-xl);
+      align-items: start;
+    }
+
+    .problem h2 {
+      font-size: var(--s-xl);
+      margin-bottom: var(--space-md);
+    }
+
+    .problem-stat {
+      font-family: var(--serif);
+      font-size: var(--s-2xl);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: var(--space-xs);
+    }
+
+    .problem-stat-label {
+      font-size: var(--s-sm);
+      color: var(--text-mid);
+      margin-bottom: var(--space-lg);
+    }
+
+    .tell-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .tell-list li {
+      font-size: var(--s-sm);
+      color: var(--text-mid);
+      padding-left: 1.5em;
+      position: relative;
+    }
+
+    .tell-list li::before {
+      content: "\2715";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* ── Categories ── */
+    .categories {
+      padding: var(--space-2xl) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .categories h2 {
+      font-size: var(--s-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .categories-intro {
+      color: var(--text-mid);
+      margin-bottom: var(--space-xl);
+      font-size: var(--s-md);
+    }
+
+    .cat-featured {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-md) var(--space-lg);
+      margin-bottom: var(--space-xl);
+      padding: var(--space-lg);
+      background: var(--bg-alt);
+      border-left: 3px solid var(--accent);
+    }
+
+    .cat-featured-name {
+      font-family: var(--mono);
+      font-size: var(--s-md);
+      font-weight: 600;
+      color: var(--accent);
+      grid-row: 1 / 3;
+      align-self: start;
+      padding-top: 0.15em;
+    }
+
+    .cat-featured h3 {
+      font-size: var(--s-lg);
+      margin-bottom: var(--space-xs);
+    }
+
+    .cat-featured p {
+      color: var(--text-mid);
+    }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+      gap: var(--space-sm) 0;
+    }
+
+    .cat-item {
+      padding: var(--space-md) 0;
+      border-top: 1px solid var(--rule);
+    }
+
+    .cat-name {
+      font-family: var(--mono);
+      font-size: var(--s-xs);
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: var(--space-xs);
+    }
+
+    .cat-label {
+      font-family: var(--serif);
+      font-size: var(--s-md);
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: var(--space-xs);
+    }
+
+    .cat-count {
+      font-size: var(--s-xs);
+      color: var(--text-light);
+      margin-bottom: var(--space-xs);
+    }
+
+    .cat-desc {
+      font-size: var(--s-sm);
+      color: var(--text-mid);
+      line-height: 1.5;
+    }
+
+    /* ── Modes ── */
+    .modes {
+      padding: var(--space-2xl) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .modes h2 {
+      font-size: var(--s-xl);
+      margin-bottom: var(--space-xl);
+    }
+
+    .modes-split {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--space-xl);
+    }
+
+    .mode-block h3 {
+      font-size: var(--s-lg);
+      margin-bottom: var(--space-sm);
+    }
+
+    .mode-block h3 span {
+      font-family: var(--mono);
+      font-size: var(--s-xs);
+      font-weight: 600;
+      color: var(--text-light);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: var(--space-xs);
+    }
+
+    .mode-steps {
+      list-style: none;
+      counter-reset: step;
+    }
+
+    .mode-steps li {
+      counter-increment: step;
+      padding: var(--space-sm) 0;
+      border-top: 1px solid var(--rule);
+      font-size: var(--s-sm);
+      color: var(--text-mid);
+      display: flex;
+      gap: var(--space-sm);
+      align-items: baseline;
+    }
+
+    .mode-steps li::before {
+      content: counter(step);
+      font-family: var(--serif);
+      font-size: var(--s-md);
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 1.5em;
+    }
+
+    /* ── Principles ── */
+    .principles {
+      padding: var(--space-2xl) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .principles h2 {
+      font-size: var(--s-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .principles-intro {
+      color: var(--text-mid);
+      font-size: var(--s-md);
+      margin-bottom: var(--space-xl);
+    }
+
+    .principle-row {
+      display: grid;
+      grid-template-columns: 10rem 1fr;
+      gap: var(--space-md);
+      padding: var(--space-md) 0;
+      border-top: 1px solid var(--rule);
+      align-items: baseline;
+    }
+
+    .principle-label {
+      font-family: var(--serif);
+      font-size: var(--s-md);
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .principle-text {
+      font-size: var(--s-sm);
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+
+    .principle-text strong {
+      color: var(--text);
+    }
+
+    /* ── Quote ── */
+    .quote-section {
+      padding: var(--space-2xl) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    blockquote {
+      font-family: var(--serif);
+      font-size: var(--s-lg);
+      font-style: italic;
+      color: var(--text);
+      max-width: 32em;
+      line-height: 1.4;
+      margin-bottom: var(--space-sm);
+    }
+
+    blockquote cite {
+      display: block;
+      font-style: normal;
+      font-family: var(--sans);
+      font-size: var(--s-xs);
+      color: var(--text-light);
+      margin-top: var(--space-sm);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Index ── */
+    .index-section {
+      padding: var(--space-2xl) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .index-section h2 {
+      font-size: var(--s-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .index-intro {
+      color: var(--text-mid);
+      font-size: var(--s-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .index-group {
+      margin-bottom: var(--space-lg);
+    }
+
+    .index-group-title {
+      font-family: var(--serif);
+      font-size: var(--s-md);
+      font-weight: 600;
+      color: var(--text);
+      padding: var(--space-xs) 0;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: var(--space-xs);
+    }
+
+    .index-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+      gap: var(--space-xs);
+    }
+
+    .index-list li {
+      font-size: var(--s-sm);
+      color: var(--text-mid);
+      display: flex;
+      gap: var(--space-sm);
+      align-items: baseline;
+      padding: 0.25rem 0;
+    }
+
+    .index-list .skill-name {
+      font-family: var(--mono);
+      font-size: var(--s-xs);
+      font-weight: 600;
+      color: var(--accent);
+      flex-shrink: 0;
+      min-width: 8rem;
+    }
+
+    .index-list .skill-desc {
+      color: var(--text-mid);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      padding: var(--space-xl) 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    .footer-left {
+      font-size: var(--s-xs);
+      color: var(--text-light);
+    }
+
+    .footer-right {
+      font-size: var(--s-xs);
+      color: var(--text-light);
+    }
+
+    .footer-right a {
+      color: var(--text-mid);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 48rem) {
+      .problem-grid {
+        grid-template-columns: 1fr;
+      }
+      .modes-split {
+        grid-template-columns: 1fr;
+      }
+      .principle-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-xs);
+      }
+      .cat-featured {
+        grid-template-columns: 1fr;
+      }
+      .cat-featured-name {
+        grid-row: auto;
+      }
+      .hero {
+        padding: var(--space-2xl) 0 var(--space-xl);
+      }
+      .index-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+    }
+
+    .reveal-up {
+      transform: translateY(20px);
+    }
+    .reveal-up.visible {
+      transform: translateY(0);
+      transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-left {
+      transform: translateX(-16px);
+    }
+    .reveal-left.visible {
+      transform: translateX(0);
+      transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-scale {
+      transform: scale(0.92);
+    }
+    .reveal-scale.visible {
+      transform: scale(1);
+      transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-fade {
+    }
+    .reveal-fade.visible {
+      transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-in.visible {
+      transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        will-change: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════ Hero ════ -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero-eyebrow">opencode skills &middot; 82 skills &middot; 15 categories</p>
+      <h1>Ship code with intention, not just <em>defaults.</em></h1>
+      <p class="hero-sub">A library of 82 specialized skills covering design, engineering, infrastructure, and process. Each one teaches the theory behind its decisions &mdash; so your AI assistant makes choices it can defend.</p>
+    </div>
+  </section>
+
+  <!-- ════ Problem ════ -->
+  <section class="problem">
+    <div class="container">
+      <div class="problem-grid">
+        <div>
+          <h2>The default problem</h2>
+          <p style="color: var(--text-mid); margin-bottom: var(--space-lg);">AI assistants produce working code. But without domain knowledge, every decision defaults to the most common pattern. Those convergent defaults compound. The result looks like every other AI output: functional, but indistinguishable.</p>
+          <div class="problem-stat reveal reveal-scale">82</div>
+          <p class="problem-stat-label">specialized skills covering design, engineering,<br>infrastructure, and process &mdash; each with theory-backed reasoning</p>
+        </div>
+        <div>
+          <p style="font-family: var(--serif); font-size: var(--s-md); font-weight: 600; margin-bottom: var(--space-md);">What happens without systematic skills</p>
+          <ul class="tell-list">
+            <li class="reveal reveal-left">Every project uses the same font pairings and color palette</li>
+            <li class="reveal reveal-left">Spacing is arbitrary &mdash; 16px here, 18px there, 14px elsewhere</li>
+            <li class="reveal reveal-left">Designs have no dominant element &mdash; everything competes equally</li>
+            <li class="reveal reveal-left">Animations are decorative, not informational &mdash; identical fades everywhere</li>
+            <li class="reveal reveal-left">Colors lack a mood-to-hue system &mdash; &ldquo;it looks nice&rdquo; is the only justification</li>
+            <li class="reveal reveal-left">Security, accessibility, and performance are afterthoughts, not competencies</li>
+            <li class="reveal reveal-left">Database schemas grow without indexing strategy or migration plans</li>
+            <li class="reveal reveal-left">Every component re-solves problems that established patterns already answer</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ Categories ════ -->
+  <section class="categories">
+    <div class="container">
+      <h2>Fifteen categories, one knowledge system</h2>
+      <p class="categories-intro">From establishing purpose before choosing colors, to deploying with rollback strategies. Each category is a domain of expertise; each skill within it is a repeatable practice.</p>
+
+      <div class="cat-featured reveal reveal-up">
+        <span class="cat-featured-name">design</span>
+        <div>
+          <h3>Design foundations &amp; visual theory</h3>
+          <p>6 skills that prevent AI-default design. Purpose, composition, proportions, color science, auditing, and stripping AI tells &mdash; the layer most AI tools skip entirely, and the one that makes the biggest difference.</p>
+        </div>
+      </div>
+
+      <div class="cat-grid">
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">ui/ux</p>
+          <p class="cat-label">Interface &amp; user experience</p>
+          <p class="cat-count">7 skills</p>
+          <p class="cat-desc">End-to-end page design, UX patterns, interaction states, responsive layout, landing pages, accessibility, and content design.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">motion</p>
+          <p class="cat-label">Animation &amp; interaction</p>
+          <p class="cat-count">3 skills</p>
+          <p class="cat-desc">Micro-interactions, animation choreography, and cohesive motion systems &mdash; purposeful motion, not decoration.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">visual</p>
+          <p class="cat-label">Visual assets &amp; illustration</p>
+          <p class="cat-count">3 skills</p>
+          <p class="cat-desc">Icon systems, illustration direction, and data visualization &mdash; visual content with cohesive style.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">systems</p>
+          <p class="cat-label">Design systems &amp; tokens</p>
+          <p class="cat-count">3 skills</p>
+          <p class="cat-desc">Design tokens, component libraries, design specs &mdash; scaling design decisions across teams and platforms.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">frontend</p>
+          <p class="cat-label">Component architecture</p>
+          <p class="cat-count">6 skills</p>
+          <p class="cat-desc">React, Next.js, component composition, CSS styling, state management, and mobile development.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">typescript</p>
+          <p class="cat-label">Type architecture &amp; safety</p>
+          <p class="cat-count">3 skills</p>
+          <p class="cat-desc">TypeScript type design, type safety enforcement, and Python &mdash; languages with systematic type patterns.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">api</p>
+          <p class="cat-label">API &amp; backend</p>
+          <p class="cat-count">5 skills</p>
+          <p class="cat-desc">REST and GraphQL API design, Node.js backends, error handling, API documentation, and webhooks.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">data</p>
+          <p class="cat-label">Data &amp; databases</p>
+          <p class="cat-count">5 skills</p>
+          <p class="cat-desc">Schema design, validation, database integration, safe migrations, and SQL optimization.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">integration</p>
+          <p class="cat-label">Feature services</p>
+          <p class="cat-count">11 skills</p>
+          <p class="cat-desc">Auth, payments, email, file uploads, search, real-time, caching, AI integration, Firebase, webhooks, and internationalization.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">infra</p>
+          <p class="cat-label">Infrastructure &amp; DevOps</p>
+          <p class="cat-count">6 skills</p>
+          <p class="cat-desc">Docker, CI/CD, deployment, infrastructure as code, environments, and monitoring.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">vcs</p>
+          <p class="cat-label">Version control &amp; release</p>
+          <p class="cat-count">6 skills</p>
+          <p class="cat-desc">Git commits, branching strategy, PR workflows, code review, changelogs, and release management.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">quality</p>
+          <p class="cat-label">Quality &amp; performance</p>
+          <p class="cat-count">8 skills</p>
+          <p class="cat-desc">Testing strategy, writing tests, performance optimization, debugging, troubleshooting, security audits, refactoring, and dependency migration.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">setup</p>
+          <p class="cat-label">Project setup</p>
+          <p class="cat-count">4 skills</p>
+          <p class="cat-desc">Project initialization, tooling configuration, onboarding docs, and feature planning.</p>
+        </div>
+        <div class="cat-item reveal reveal-in">
+          <p class="cat-name">seo</p>
+          <p class="cat-label">SEO &amp; visual QA</p>
+          <p class="cat-count">2 skills</p>
+          <p class="cat-desc">Next.js SEO implementation and pixel-perfect visual review &mdash; shipping quality, not just shipping.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ Modes ════ -->
+  <section class="modes">
+    <div class="container">
+      <h2>Two modes of operation</h2>
+      <div class="modes-split">
+        <div class="mode-block">
+          <h3>
+            <span>Checker</span>
+            Auditing existing work
+          </h3>
+          <ol class="mode-steps">
+            <li class="reveal reveal-up">Can you state the design&rsquo;s purpose in one sentence?</li>
+            <li class="reveal reveal-up">Does the typography serve the medium, or default to the trend?</li>
+            <li class="reveal reveal-up">Are proportional ratios intentional, or are they arbitrary pixels?</li>
+            <li class="reveal reveal-up">Is there one dominant element, or does everything compete?</li>
+            <li class="reveal reveal-up">Does white space create hierarchy, or is it uniform?</li>
+            <li class="reveal reveal-up">Does color follow a mood-to-hue system? Is it accessible?</li>
+            <li class="reveal reveal-up">Are all 8 interaction states defined? Touch targets met?</li>
+            <li class="reveal reveal-up">Does motion communicate information, or is it decoration?</li>
+            <li class="reveal reveal-up">Is every spacing value a design token, or a magic number?</li>
+            <li class="reveal reveal-up">Are there AI tells &mdash; convergent defaults that signal &ldquo;generated&rdquo;?</li>
+          </ol>
+        </div>
+        <div class="mode-block">
+          <h3>
+            <span>Applier</span>
+            Building from scratch
+          </h3>
+          <ol class="mode-steps">
+            <li class="reveal reveal-up">Define purpose, audience, and aesthetic direction</li>
+            <li class="reveal reveal-up">Choose type scale and proportional system</li>
+            <li class="reveal reveal-up">Select body font, pair it, set leading</li>
+            <li class="reveal reveal-up">Build color palette from mood &rarr; hue &rarr; scheme</li>
+            <li class="reveal reveal-up">Establish dominance, hierarchy, and composition</li>
+            <li class="reveal reveal-up">Define spacing tokens aligned to the type scale</li>
+            <li class="reveal reveal-up">Add interaction states: default through success</li>
+            <li class="reveal reveal-up">Implement with semantic HTML and accessible markup</li>
+            <li class="reveal reveal-up">Run the 10-dimension audit before shipping</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ Principles ════ -->
+  <section class="principles">
+    <div class="container">
+      <h2>What it teaches</h2>
+      <p class="principles-intro">The theory behind every recommendation.</p>
+
+      <div class="principle-row reveal reveal-up">
+        <span class="principle-label">Three layers</span>
+        <p class="principle-text"><strong>Purpose, medium, and aesthetics</strong> must reinforce each other. The Pantheon&rsquo;s coffers exist because the dome needed them. They&rsquo;re also beautiful. Technology constraints are design opportunities.</p>
+      </div>
+      <div class="principle-row reveal reveal-up">
+        <span class="principle-label">Typography</span>
+        <p class="principle-text">Garamond is timeless in print but blurs on screen. <strong>Medium matters.</strong> The squint test, the n-test for font pairing, max two families, no fake bold, smart quotes.</p>
+      </div>
+      <div class="principle-row reveal reveal-up">
+        <span class="principle-label">Proportions</span>
+        <p class="principle-text">Dimensions should relate through <strong>intentional ratios</strong> (2:3, 3:4, golden), not arbitrary pixel values. Tschichold&rsquo;s method derives margins from the page itself.</p>
+      </div>
+      <div class="principle-row reveal reveal-up">
+        <span class="principle-label">Composition</span>
+        <p class="principle-text"><strong>Dominance, similarity, rhythm, texture, direction, contrast.</strong> One element commands attention. The eye is guided, not scattered. Not everything gets a card.</p>
+      </div>
+      <div class="principle-row reveal reveal-up">
+        <span class="principle-label">Color</span>
+        <p class="principle-text"><strong>Mood drives hue. Hue drives scheme.</strong> Color wheel relationships (analogous, complementary, triadic). Hue-shifted shadows for depth. Colorblind-safe with redundant cues.</p>
+      </div>
+      <div class="principle-row reveal reveal-up">
+        <span class="principle-label">Motion</span>
+        <p class="principle-text">Remove an animation. Did you lose information? If not, it was decorative. <strong>100ms micro, 300ms standard, 500ms complex.</strong> Ease-out for entries. Respect reduced-motion.</p>
+      </div>
+      <div class="principle-row reveal reveal-up">
+        <span class="principle-label">Interaction</span>
+        <p class="principle-text">Eight states every element needs: <strong>default, hover, focus, active, disabled, loading, error, success.</strong> 44&times;44px touch targets. Focus-visible. No placeholder-only labels.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ Quote ════ -->
+  <section class="quote-section">
+    <div class="container">
+      <blockquote class="reveal reveal-fade">
+        &ldquo;To truly be adept at designing something, you have to understand how it works. Otherwise, you aren&rsquo;t designing. You&rsquo;re creating a veneer. You&rsquo;re drawing ponies.&rdquo;
+        <cite>&mdash; David Kadavy</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ════ Full Index ════ -->
+  <section class="index-section">
+    <div class="container">
+      <h2>Complete skill index</h2>
+      <p class="index-intro">All 82 skills, organized by category.</p>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Design Foundations &amp; Visual Theory</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">design-foundations</span> <span class="skill-desc">Purpose, audience, aesthetic direction</span></li>
+          <li><span class="skill-name">composition</span> <span class="skill-desc">Dominance, rhythm, texture, contrast</span></li>
+          <li><span class="skill-name">proportions</span> <span class="skill-desc">Intentional type and space ratios</span></li>
+          <li><span class="skill-name">design-audit</span> <span class="skill-desc">10-dimension principle-based review</span></li>
+          <li><span class="skill-name">strip-ai-tells</span> <span class="skill-desc">Detect and replace AI defaults</span></li>
+          <li><span class="skill-name">visual-hierarchy</span> <span class="skill-desc">&rarr; see composition, proportions</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Typography &amp; Color</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">typography</span> <span class="skill-desc">Font pairing, scales, vertical rhythm</span></li>
+          <li><span class="skill-name">color-palette</span> <span class="skill-desc">Mood-to-hue semantic color systems</span></li>
+          <li><span class="skill-name">dark-mode</span> <span class="skill-desc">Dual-theme contrast and elevation</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Layout &amp; Spacing</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">spatial-design</span> <span class="skill-desc">Gestalt grouping, density, containment</span></li>
+          <li><span class="skill-name">responsive-layout</span> <span class="skill-desc">Adaptive layouts across breakpoints</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Design Systems &amp; Tokens</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">design-system</span> <span class="skill-desc">Token systems and component libraries</span></li>
+          <li><span class="skill-name">design-tokens</span> <span class="skill-desc">Scalable token-to-code pipelines</span></li>
+          <li><span class="skill-name">design-spec</span> <span class="skill-desc">Pixel-perfect specs with all states</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Interface &amp; User Experience</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">ui-design</span> <span class="skill-desc">End-to-end page design workflow</span></li>
+          <li><span class="skill-name">ux-patterns</span> <span class="skill-desc">Navigation, forms, feedback patterns</span></li>
+          <li><span class="skill-name">interaction-design</span> <span class="skill-desc">Drag, gestures, keyboard, touch</span></li>
+          <li><span class="skill-name">accessibility</span> <span class="skill-desc">WCAG compliance, ARIA, keyboard nav</span></li>
+          <li><span class="skill-name">landing-page</span> <span class="skill-desc">High-converting pages with narrative</span></li>
+          <li><span class="skill-name">content-design</span> <span class="skill-desc">UX writing, microcopy, tone of voice</span></li>
+          <li><span class="skill-name">visual-qa</span> <span class="skill-desc">Pixel-level spacing and alignment review</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Visual Assets</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">iconography</span> <span class="skill-desc">Consistent icon system design</span></li>
+          <li><span class="skill-name">illustration-direction</span> <span class="skill-desc">Cohesive illustration style guides</span></li>
+          <li><span class="skill-name">data-visualization</span> <span class="skill-desc">Accurate, readable charts and dashboards</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Motion &amp; Animation</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">micro-interactions</span> <span class="skill-desc">Hover, loading, transition states</span></li>
+          <li><span class="skill-name">animation-choreography</span> <span class="skill-desc">Multi-element page transitions</span></li>
+          <li><span class="skill-name">motion-system</span> <span class="skill-desc">Easing, duration, choreography systems</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Component Architecture</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">react</span> <span class="skill-desc">Modern React best practices</span></li>
+          <li><span class="skill-name">nextjs</span> <span class="skill-desc">App Router, Server Components, production</span></li>
+          <li><span class="skill-name">component-composition</span> <span class="skill-desc">Reusable, composable, accessible components</span></li>
+          <li><span class="skill-name">css-styling</span> <span class="skill-desc">Tailwind, CSS modules, modern CSS</span></li>
+          <li><span class="skill-name">state-management</span> <span class="skill-desc">Scalable React state patterns</span></li>
+          <li><span class="skill-name">mobile-development</span> <span class="skill-desc">React Native cross-platform apps</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">TypeScript &amp; Languages</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">typescript</span> <span class="skill-desc">Generics, unions, type architectures</span></li>
+          <li><span class="skill-name">type-safety</span> <span class="skill-desc">Fix errors, enforce strict checking</span></li>
+          <li><span class="skill-name">python</span> <span class="skill-desc">Idiomatic Python with type hints</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">API &amp; Backend</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">api-design</span> <span class="skill-desc">REST/GraphQL API design patterns</span></li>
+          <li><span class="skill-name">backend-api</span> <span class="skill-desc">Node.js APIs with middleware patterns</span></li>
+          <li><span class="skill-name">graphql</span> <span class="skill-desc">Schema, resolvers, subscriptions</span></li>
+          <li><span class="skill-name">document-api</span> <span class="skill-desc">API docs from source code</span></li>
+          <li><span class="skill-name">error-handling</span> <span class="skill-desc">Error types and recovery strategies</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Data &amp; Databases</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">data-model</span> <span class="skill-desc">Schemas, normalization, indexing</span></li>
+          <li><span class="skill-name">data-validation</span> <span class="skill-desc">Validate at every boundary</span></li>
+          <li><span class="skill-name">database-integration</span> <span class="skill-desc">Prisma, Supabase, MongoDB clients</span></li>
+          <li><span class="skill-name">database-migration</span> <span class="skill-desc">Safe schema changes, zero downtime</span></li>
+          <li><span class="skill-name">sql</span> <span class="skill-desc">Query design and optimization</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Integration &amp; Feature Services</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">auth</span> <span class="skill-desc">OAuth2, JWT, RBAC, SSO systems</span></li>
+          <li><span class="skill-name">payments</span> <span class="skill-desc">Stripe, subscriptions, webhooks</span></li>
+          <li><span class="skill-name">email</span> <span class="skill-desc">Transactional email and templates</span></li>
+          <li><span class="skill-name">file-upload</span> <span class="skill-desc">Secure uploads with progress and storage</span></li>
+          <li><span class="skill-name">search</span> <span class="skill-desc">Full-text search, autocomplete, filters</span></li>
+          <li><span class="skill-name">real-time</span> <span class="skill-desc">WebSockets, SSE, collaboration</span></li>
+          <li><span class="skill-name">caching</span> <span class="skill-desc">Multi-layer caching and invalidation</span></li>
+          <li><span class="skill-name">ai-integration</span> <span class="skill-desc">LLMs, RAG, streaming, prompt engineering</span></li>
+          <li><span class="skill-name">firebase</span> <span class="skill-desc">Firestore, Auth, Functions, Hosting</span></li>
+          <li><span class="skill-name">webhooks-events</span> <span class="skill-desc">Webhooks, queues, async workflows</span></li>
+          <li><span class="skill-name">internationalization</span> <span class="skill-desc">RTL, translation, locale support</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Infrastructure &amp; DevOps</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">docker</span> <span class="skill-desc">Optimized containers and compose</span></li>
+          <li><span class="skill-name">ci-pipeline</span> <span class="skill-desc">CI/CD pipelines and build optimization</span></li>
+          <li><span class="skill-name">deployment</span> <span class="skill-desc">Zero-downtime with rollback strategies</span></li>
+          <li><span class="skill-name">devops-iac</span> <span class="skill-desc">Terraform, Pulumi, secrets, CI/CD</span></li>
+          <li><span class="skill-name">environments</span> <span class="skill-desc">Dev, staging, prod parity and feature flags</span></li>
+          <li><span class="skill-name">monitoring</span> <span class="skill-desc">Logging, APM, alerting, health checks</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Version Control &amp; Release</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">git-commit</span> <span class="skill-desc">Atomic commits with conventional messages</span></li>
+          <li><span class="skill-name">branching-strategy</span> <span class="skill-desc">Git branching models for teams</span></li>
+          <li><span class="skill-name">pr-workflow</span> <span class="skill-desc">PR creation, review, merge automation</span></li>
+          <li><span class="skill-name">code-review</span> <span class="skill-desc">Bugs, security, style, tests review</span></li>
+          <li><span class="skill-name">changelog</span> <span class="skill-desc">Structured changelogs from git history</span></li>
+          <li><span class="skill-name">release-management</span> <span class="skill-desc">Versioning, tags, coordinated deployment</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Quality &amp; Performance</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">testing-strategy</span> <span class="skill-desc">Test pyramid, coverage, strategy</span></li>
+          <li><span class="skill-name">write-tests</span> <span class="skill-desc">Thorough tests following conventions</span></li>
+          <li><span class="skill-name">performance-optimize</span> <span class="skill-desc">Profile and optimize bottlenecks</span></li>
+          <li><span class="skill-name">debug</span> <span class="skill-desc">Reproduce, isolate, fix, verify</span></li>
+          <li><span class="skill-name">troubleshoot</span> <span class="skill-desc">Read errors, isolate root cause</span></li>
+          <li><span class="skill-name">security-audit</span> <span class="skill-desc">Secrets, injection, auth vulnerabilities</span></li>
+          <li><span class="skill-name">refactor</span> <span class="skill-desc">Identify smells, refactor safely</span></li>
+          <li><span class="skill-name">migrate-deps</span> <span class="skill-desc">Safely upgrade or replace dependencies</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">Project Setup</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">project-init</span> <span class="skill-desc">Scaffold projects with proper structure</span></li>
+          <li><span class="skill-name">config-setup</span> <span class="skill-desc">Linters, formatters, type checkers config</span></li>
+          <li><span class="skill-name">onboarding</span> <span class="skill-desc">Project docs and contributor guides</span></li>
+          <li><span class="skill-name">plan-feature</span> <span class="skill-desc">Break features into implementation steps</span></li>
+        </ul>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-title">SEO</h3>
+        <ul class="index-list">
+          <li><span class="skill-name">seo</span> <span class="skill-desc">Next.js metadata, OG, crawlability</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ Footer ════ -->
+  <footer>
+    <div class="container">
+      <div class="footer">
+        <p class="footer-left">opencode skills &middot; 82 skills across 15 categories</p>
+        <p class="footer-right">Inspired by <a href="https://ryanthedev.github.io/design-for-ai/">design-for-ai</a> &middot; Principles from <em>Design for Hackers</em> by David Kadavy</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var reveals = document.querySelectorAll('.reveal');
+      var seen = new Set();
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting || seen.has(entry.target)) return;
+          seen.add(entry.target);
+
+          var parent = entry.target.parentElement;
+          var siblings = parent.querySelectorAll(':scope > .reveal');
+          var siblingIndex = Array.prototype.indexOf.call(siblings, entry.target);
+
+          var delay = siblingIndex * 60;
+          entry.target.style.transitionDelay = delay + 'ms';
+          entry.target.classList.add('visible');
+
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      reveals.forEach(function (el) { observer.observe(el); });
+    })();
+  </script>
+</body>
+</html>

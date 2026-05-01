@@ -38,24 +38,181 @@ Use this skill when:
 5. **Compose configuration** — Define services with proper health checks, restart policies, and dependency ordering.
 6. **Test the result** — Build, run, verify the container works, check image size.
 
-## Dockerfile template (multi-stage)
+## Multi-stage builds
+
+### Node.js
 
 ```dockerfile
-FROM language:version AS builder
+# Build stage
+FROM node:20-alpine AS builder
 WORKDIR /app
-COPY dependency-files ./
-RUN install dependencies
-COPY . .
-RUN build command
+COPY package*.json ./
+RUN npm ci --only=production
 
-FROM language:version-slim AS runtime
+# Production stage
+FROM node:20-alpine AS production
 WORKDIR /app
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# Copy only necessary files
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --chown=nodejs:nodejs . .
+
+USER nodejs
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node healthcheck.js || exit 1
+
+CMD ["node", "server.js"]
+```
+
+### Python
+
+```dockerfile
+FROM python:3.11-slim AS builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --user --no-cache-dir -r requirements.txt
+
+FROM python:3.11-slim
+WORKDIR /app
+
+# Copy only installed packages
+COPY --from=builder /root/.local /root/.local
+COPY . .
+
+# Make sure scripts in .local are usable
+ENV PATH=/root/.local/bin:$PATH
+
+EXPOSE 8000
+HEALTHCHECK CMD curl -f http://localhost:8000/health || exit 1
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0"]
+```
+
+## Docker Compose
+
+### Development
+
+```yaml
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://user:pass@db:5432/myapp
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:15-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: myapp
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+
+volumes:
+  postgres_data:
+```
+
+### Production
+
+```yaml
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+```
+
+## Security hardening
+
+```dockerfile
+# Run as non-root
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-COPY --from=builder /app/output ./
 USER appuser
-EXPOSE 8080
-HEALTHCHECK CMD curl -f http://localhost:8080/health || exit 1
-CMD ["start-command"]
+
+# Don't run as root
+FROM node:20-alpine
+RUN adduser -S appuser
+USER appuser
+
+# Read-only root filesystem
+ docker run --read-only --tmpfs /tmp myimage
+
+# Drop capabilities
+ docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE myimage
+
+# No new privileges
+ docker run --security-opt=no-new-privileges:true myimage
 ```
 
 ## Key principles

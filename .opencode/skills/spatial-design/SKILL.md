@@ -25,6 +25,17 @@ Use this skill when:
 
 ## How I work
 
+### Checker mode (auditing existing spacing)
+
+1. **Audit current spacing** — List all spacing values currently in use. Identify inconsistencies (13px here, 14px there, 15px elsewhere — all trying to be "a small gap").
+2. **Check for magic numbers** — Any pixel value that doesn't map to a spacing token is a magic number.
+3. **Check grouping clarity** — Are related items closer together than unrelated items? If spacing is uniform everywhere, grouping is unclear.
+4. **Check containment level** — Are there cards inside cards? Dividers where whitespace would work? Over-containment is as bad as under-containment.
+5. **Check density match** — Is a data-dense component using the same density as a content page? Different contexts need different density.
+6. **Check vertical rhythm** — Does all vertical spacing align to a line-height grid?
+
+### Applier mode (building from scratch)
+
 1. **Audit current spacing** — List all spacing values currently in use. Identify inconsistencies (13px here, 14px there, 15px elsewhere — all trying to be "a small gap").
 2. **Define the spatial scale** — Establish a spacing token system based on 4px increments.
 3. **Apply grouping rules** — Use Gestalt principles to determine what belongs together.
