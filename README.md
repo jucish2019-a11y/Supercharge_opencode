@@ -258,4 +258,4 @@ MIT
 
 ---
 
-*Inspired by [design-for-ai](https://ryanthedev.github.io/design-for-ai/) · Principles from Design for Hackers by David Kadavy*
+*Designed by [jucish2019-a11y](https://github.com/jucish2019-a11y) · Inspired by [design-for-ai](https://ryanthedev.github.io/design-for-ai/) · Principles from Design for Hackers by David Kadavy*
